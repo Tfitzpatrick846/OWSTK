@@ -1,2 +1,6 @@
 *.asv
 ~*
+*~
+__pycache__/
+*.swp
+*.swo
