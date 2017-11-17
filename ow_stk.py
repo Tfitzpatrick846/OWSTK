@@ -93,6 +93,12 @@ def setSatGraphics(sat, profile):
 
     return graphics
 
+def addFacility(sc, name, lat, lon):
+    facility = sc.Children.New(STKObjects.eFacility, name)
+    facility2 = facility.QueryInterface(STKObjects.IAgFacility)
+    facility2.Position.AssignGeodetic(lat, lon, 0)
+    return facility2
+
 def hexColorToInt(rgb):
 
     r = int(rgb[0:2],16)
