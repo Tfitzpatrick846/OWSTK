@@ -99,6 +99,22 @@ def addFacility(sc, name, lat, lon):
     facility2.Position.AssignGeodetic(lat, lon, 0)
     return facility2
 
+def setFacilityGraphics(facility, profile):
+
+    if profile == 0:
+        color = '00FFFF'
+    elif profile == 1:
+        color = 'FF00FF'
+    elif profile == 2:
+        color = 'FFFF00'
+    else:
+        color = 'FFFFFF'
+
+    graphics = facility.Graphics
+    graphics.Color = hexColorToInt(color)
+    graphics.LabelVisible = False
+
+
 def hexColorToInt(rgb):
 
     r = int(rgb[0:2],16)
