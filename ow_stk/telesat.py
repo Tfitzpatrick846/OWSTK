@@ -2,6 +2,8 @@ from . import satellite as stk_sat
 from . import graphics
 
 def addConstellation(sc):
+
+    print('Creating Telesat constellation')
     
     alt_pol = 1000
     inc_pol = 99.5
@@ -19,6 +21,7 @@ def addConstellation(sc):
             satName = 'Telesat_pol%02d%02d' % (plane, sat)
             satObj = stk_sat.add(sc, satName, alt_pol, alt_pol, inc_pol, raan, trueAnomaly)
             stk_sat.graphics(satObj, graphics.Telesat)
+            print('.',end='')
 
     subPlane = 2
 
@@ -33,6 +36,7 @@ def addConstellation(sc):
             satName = 'Telesat_pol%02d%02d' % (numPlanes_pol + plane, sat)
             satObj = stk_sat.add(sc, satName, alt_pol, alt_pol, inc_pol, raan, trueAnomaly)
             stk_sat.graphics(satObj, graphics.Telesat)
+            print('.',end='')
 
     for plane in range(1):
 
@@ -45,6 +49,7 @@ def addConstellation(sc):
             satName = 'Telesat_pol%02d%02d' % (numPlanes_pol + 5, sat)
             satObj = stk_sat.add(sc, satName, alt_pol, alt_pol, inc_pol, raan, trueAnomaly)
             stk_sat.graphics(satObj, graphics.Telesat)
+            print('.',end='')
 
     alt_inc = 1248
     inc_inc = 37.4
@@ -62,4 +67,5 @@ def addConstellation(sc):
             satName = 'Telesat_inc%02d%02d' % (plane, sat)
             satObj = stk_sat.add(sc, satName, alt_inc, alt_inc, inc_inc, raan, trueAnomaly)
             stk_sat.graphics(satObj, graphics.Telesat)
+            print('.',end='')
 
