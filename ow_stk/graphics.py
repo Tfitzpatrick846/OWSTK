@@ -1,0 +1,33 @@
+def profile(n):
+    if n == 0:
+        color = '00FFFF'
+    elif n == 1:
+        color = 'FF00FF'
+    elif n == 2:
+        color = 'FFFF00'
+    else:
+        color = 'FFFFFF'
+    return color
+
+def colorProfile(profile):
+    if profile == 0:
+        color = '00FFFF'
+    elif profile == 1:
+        color = 'FF00FF'
+    elif profile == 2:
+        color = 'FFFF00'
+    else:
+        color = 'FFFFFF'
+
+    return hexColorToInt(color)
+
+
+def hexColorToInt(rgb):
+
+    r = int(rgb[0:2],16)
+    g = int(rgb[2:4],16)
+    b = int(rgb[4:6],16)
+
+    color = format(b, '02X') + format(g, '02X') + format(r, '02X')
+
+    return int(color,16) # STK uses BGR color codes
