@@ -18,15 +18,28 @@ def add(sc, name, apogee, perigee, inc, raan, trueAnomaly, argper=0):
     # switch the orbit representation to keplerian
     keplerian = satProp.InitialState.Representation.ConvertTo(STKUtil.eOrbitStateClassical)
     keplerian2 = keplerian.QueryInterface(STKObjects.IAgOrbitStateClassical)
+
+    # apogee and perigee
     keplerian2.SizeShapeType = STKObjects.eSizeShapeAltitude
-    keplerian2.LocationType = STKObjects.eLocationTrueAnomaly
-    keplerian2.SizeShape.PerigeeAltitude = apogee
-    keplerian2.SizeShape.ApogeeAltitude = perigee
+    sizeShape = keplerian2.SizeShape.QueryInterface(STKObjects.IAgClassicalSizeShapeAltitude)
+    sizeShape.PerigeeAltitude = perigee
+    sizeShape.ApogeeAltitude = apogee
+
+    # inclination and argument of perigee
     keplerian2.Orientation.Inclination = inc
     keplerian2.Orientation.ArgOfPerigee = argper
-    keplerian2.Orientation.AscNode.Value = raan
-    keplerian2.Location.Value = trueAnomaly
 
+    # ascending node
+    keplerian2.Orientation.AscNodeType = STKObjects.eAscNodeRAAN
+    ascNode = keplerian2.Orientation.AscNode.QueryInterface(STKObjects.IAgOrientationAscNodeRAAN)
+    ascNode.Value = raan
+
+    # true anomaly
+    keplerian2.LocationType = STKObjects.eLocationTrueAnomaly
+    location = keplerian2.Location.QueryInterface(STKObjects.IAgClassicalLocationTrueAnomaly)
+    location.Value = trueAnomaly
+
+    # assign the state and propagate
     satProp.InitialState.Representation.Assign(keplerian)
     satProp.Propagate()
 
