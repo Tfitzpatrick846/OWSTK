@@ -1,3 +1,6 @@
+OneWeb = 0
+Telesat = 1
+
 def profile(n):
     if n == 0:
         color = '00FFFF'
