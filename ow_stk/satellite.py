@@ -6,7 +6,7 @@ from comtypes.gen import STKUtil, STKObjects
 def add(sc, name, apogee, perigee, inc, raan, trueAnomaly, argper=0):
     # create the satellite object
     sat = sc.Children.New(STKObjects.eSatellite, name)
-    
+
     # create the interface
     sat2 = sat.QueryInterface(STKObjects.IAgSatellite)
 
@@ -43,20 +43,24 @@ def add(sc, name, apogee, perigee, inc, raan, trueAnomaly, argper=0):
     satProp.InitialState.Representation.Assign(keplerian)
     satProp.Propagate()
 
-    return sat2
+    return sat
 
 def graphics(sat, profile):
 
-    g = sat.Graphics
+    # create the interface
+    sat2 = sat.QueryInterface(STKObjects.IAgSatellite)
+
+    g = sat2.Graphics
     g.SetAttributesType(STKObjects.eAttributesBasic)
     attributes = g.Attributes
     attributes2 = attributes.QueryInterface(STKObjects.IAgVeGfxAttributesOrbit)
     attributes2.Line.Width = 1
-    attributes2.Line.Style = 0
+    attributes2.Line.Style = 0 # 0: Solid
     attributes2.Inherit = False
     attributes2.Color = gfx.colorProfile(profile)
     attributes2.MarkerStyle = 'Circle'
     attributes2.LabelVisible = False
 
     return g
+
 

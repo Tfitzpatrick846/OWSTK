@@ -10,6 +10,8 @@ def addSS3Constellation(sc):
     numPlanes = 18
     numSatsPerPlane = 49
 
+    satObjs = []
+
     for plane in range(numPlanes):
 
         raan = 0 + plane * 360 / numPlanes
@@ -20,7 +22,10 @@ def addSS3Constellation(sc):
             satName = 'OneWeb%02d%02d' % (plane, sat)
             satObj = stk_sat.add(sc, satName, alt, alt, inc, raan, trueAnomaly)
             stk_sat.graphics(satObj, graphics.OneWeb)
+            satObjs.append(satObj)
             print('.',end='')
+    
+    return satObjs
 
 def addSS2Constellation(sc):
 
@@ -31,6 +36,8 @@ def addSS2Constellation(sc):
     numPlanes = 18
     numSatsPerPlane = 36
 
+    satObjs = []
+
     for plane in range(numPlanes):
 
         raan = 0 + plane * 360 / numPlanes
@@ -41,7 +48,10 @@ def addSS2Constellation(sc):
             satName = 'OneWeb%02d%02d' % (plane, sat)
             satObj = stk_sat.add(sc, satName, alt, alt, inc, raan, trueAnomaly)
             stk_sat.graphics(satObj, graphics.OneWeb)
+            satObjs.append(satObj)
             print('.',end='')
+    
+    return satObjs
 
 def addSS1Constellation(sc):
 
@@ -52,6 +62,8 @@ def addSS1Constellation(sc):
     numPlanes = 9
     numSatsPerPlane = 32
 
+    satObjs = []
+
     for plane in range(numPlanes):
 
         raan = 0 + plane * 360 / numPlanes
@@ -62,5 +74,8 @@ def addSS1Constellation(sc):
             satName = 'OneWeb%02d%02d' % (plane, sat)
             satObj = stk_sat.add(sc, satName, alt, alt, inc, raan, trueAnomaly)
             stk_sat.graphics(satObj, graphics.OneWeb)
+            satObjs.append(satObj)
             print('.',end='')
+    
+    return satObjs
 
