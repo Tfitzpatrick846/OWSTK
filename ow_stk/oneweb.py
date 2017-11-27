@@ -1,5 +1,10 @@
 from . import satellite as stk_sat
 from . import graphics
+import xlrd
+
+import pkg_resources
+resource_package = __name__
+snpListFilename = pkg_resources.resource_filename(resource_package,'SNP sites v3.2.xlsx')
 
 def addSS3Constellation(sc):
 
@@ -78,4 +83,21 @@ def addSS1Constellation(sc):
             print('.',end='')
     
     return satObjs
+
+def addSNPs(sc):
+
+    snpBook = xlrd.open_workbook(snpListFilename)
+    snpSheet = snpBook.sheet_by_index(0)
+
+    label = []
+    lat = []
+    lon = []
+
+    for k in range(snpSheet.nrows):
+
+        if type(snpSheet.cell_value(rowx=k, colx=0)) is float:
+            label.append(snpSheet.cell_value(rowx=k, colx=1))
+            lat.append(snpSheet.cell_value(rowx=k, colx=3))
+            lon.append(snpSheet.cell_value(rowx=k, colx=4))
+            
 
