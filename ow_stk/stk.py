@@ -37,3 +37,9 @@ def new(name='Untitled'):
     r = root(a)
     sc = newScenario(r, name)
     return sc, r, a
+
+def current():
+    a = app()
+    r = root(a)
+    sc = root.CurrentScenario
+    return sc, r, a
