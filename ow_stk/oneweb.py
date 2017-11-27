@@ -1,5 +1,6 @@
 from . import satellite as stk_sat
 from . import graphics
+from . import facility
 import xlrd
 
 import pkg_resources
@@ -99,5 +100,8 @@ def addSNPs(sc):
             label.append(snpSheet.cell_value(rowx=k, colx=1))
             lat.append(snpSheet.cell_value(rowx=k, colx=3))
             lon.append(snpSheet.cell_value(rowx=k, colx=4))
-            
+
+    for k in range(len(label)):
+
+            facility.add(sc, label[k], lat[k], lon[k])
 

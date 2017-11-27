@@ -32,3 +32,8 @@ def newScenario(root, name='Untitled'):
     root.NewScenario(name)
     return root.CurrentScenario
 
+def new(name='Untitled'):
+    a = app()
+    r = root(a)
+    sc = newScenario(r, name)
+    return sc, r, a
