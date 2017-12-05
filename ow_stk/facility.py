@@ -15,4 +15,6 @@ def graphics(facility, profile):
     g.Color = gfx.colorProfile(profile)
     g.LabelVisible = False
 
+def attachSensor(facility, sensor):
 
+    pass

@@ -1,4 +1,5 @@
 from . import satellite as stk_sat
+from . import sensor as stk_sensor
 from . import graphics
 from . import facility
 import xlrd
@@ -105,3 +106,20 @@ def addSNPs(sc):
 
             facility.add(sc, label[k], lat[k], lon[k])
 
+def attachUserAntennas(sat):
+
+    sensors = []
+    dim1 = 23.7
+    dim2 = 1.568
+
+    for k in range(16):
+
+        el = ((k-8) + 0.5) * dim2
+        sensor = stk_sensor.addFixed(sat,'Ku%2d' % k, 'rectangle', dim1, dim2, 0, el)
+        sensors.append(sensor)
+
+    return sensors
+
+def attachGatewayAntennas(sat):
+
+    pass

@@ -77,3 +77,10 @@ def addConstellation(sc):
 
     return satObjs
 
+def attachUserAntennas(sat):
+
+    pass
+
+def attachGatewayAntennas(sat):
+
+    pass

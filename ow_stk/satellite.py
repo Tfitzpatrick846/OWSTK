@@ -64,3 +64,6 @@ def graphics(sat, profile):
     return g
 
 
+def attachSensor(sat, sensor):
+
+    pass
