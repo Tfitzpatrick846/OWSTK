@@ -26,6 +26,8 @@ def maximize(app):
 
 def root(app):
     r = app.Personality2
+    r.UnitPreferences.Item('LatitudeUnit').SetCurrentUnit('deg')
+    r.UnitPreferences.Item('LongitudeUnit').SetCurrentUnit('deg')
     return r
 
 def newScenario(root, name='Untitled'):
