@@ -68,7 +68,7 @@ def addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
 
             plane = int(satID/100)
             sat = satID % 100
-            raan = 0 + plane * 360 / numPlanes
+            raan = 0 + plane * 180 / numPlanes
             satObj = createSatellite(sc, plane, sat, alt, inc, raan)
             satObjs.append(satObj)
             print('.',end='')
@@ -77,7 +77,7 @@ def addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
 
         for plane in range(numPlanes):
 
-            raan = 0 + plane * 360 / numPlanes
+            raan = 0 + plane * 180 / numPlanes
 
             for sat in range(numSatsPerPlane):
 
