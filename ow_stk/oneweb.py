@@ -8,82 +8,85 @@ import pkg_resources
 resource_package = __name__
 snpListFilename = pkg_resources.resource_filename(resource_package,'SNP sites v3.2.xlsx')
 
-def addSS3Constellation(sc):
+def addSS1Constellation(sc, satIDs=[]):
+    """ Build the OneWeb Service Stage 1 constellation with no spares
+    sc: scenario
+    satIDs: optional parameter to specify which satellites should be added
+           list of 4 digit number or string thereof to identify plane and sat number
+           for instance, 1208 is the 8th satellite in the 12th plane
+    """
 
     print('Creating OneWeb constellation')
     
-    alt = 1200
-    inc = 87.9
-    numPlanes = 18
-    numSatsPerPlane = 49
+    return addConstellation(sc, 9, 32, satIDs)
 
-    satObjs = []
-
-    for plane in range(numPlanes):
-
-        raan = 0 + plane * 360 / numPlanes
-
-        for sat in range(numSatsPerPlane):
-
-            trueAnomaly = sat * 360 / numSatsPerPlane
-            satName = 'OneWeb%02d%02d' % (plane, sat)
-            satObj = stk_sat.add(sc, satName, alt, alt, inc, raan, trueAnomaly)
-            stk_sat.graphics(satObj, graphics.OneWeb)
-            satObjs.append(satObj)
-            print('.',end='')
-    
-    return satObjs
-
-def addSS2Constellation(sc):
+def addSS2Constellation(sc, satIDs=[]):
+    """ Build the OneWeb Service Stage 2 constellation with no spares
+    sc: scenario
+    satIDs: optional parameter to specify which satellites should be added
+           list of 4 digit number or string thereof to identify plane and sat number
+           for instance, 1208 is the 8th satellite in the 12th plane
+    """
 
     print('Creating OneWeb constellation')
     
-    alt = 1200
-    inc = 87.9
-    numPlanes = 18
-    numSatsPerPlane = 36
+    return addConstellation(sc, 18, 36, satIDs)
 
-    satObjs = []
-
-    for plane in range(numPlanes):
-
-        raan = 0 + plane * 360 / numPlanes
-
-        for sat in range(numSatsPerPlane):
-
-            trueAnomaly = sat * 360 / numSatsPerPlane
-            satName = 'OneWeb%02d%02d' % (plane, sat)
-            satObj = stk_sat.add(sc, satName, alt, alt, inc, raan, trueAnomaly)
-            stk_sat.graphics(satObj, graphics.OneWeb)
-            satObjs.append(satObj)
-            print('.',end='')
-    
-    return satObjs
-
-def addSS1Constellation(sc):
+def addSS3Constellation(sc, satIDs=[]):
+    """ Build the OneWeb Service Stage 3 constellation with no spares
+    sc: scenario
+    satIDs: optional parameter to specify which satellites should be added
+           list of 4 digit number or string thereof to identify plane and sat number
+           for instance, 1208 is the 8th satellite in the 12th plane
+    """
 
     print('Creating OneWeb constellation')
     
+    return addConstellation(sc, 18, 49, satIDs)
+
+def addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
+    """Build a OneWeb constellation with a given number of planes and satellites
+    """
+
+    def createSatellite(sc, plane, sat, alt, inc, raan):
+
+        trueAnomaly = sat * 360 / numSatsPerPlane
+        satName = 'OneWeb%02d%02d' % (plane, sat)
+        satObj = stk_sat.add(sc, satName, alt, alt, inc, raan, trueAnomaly)
+        stk_sat.graphics(satObj, graphics.OneWeb)
+        return satObj
+    
+    
     alt = 1200
     inc = 87.9
-    numPlanes = 9
-    numSatsPerPlane = 32
 
     satObjs = []
 
-    for plane in range(numPlanes):
+    if satIDs:
 
-        raan = 0 + plane * 360 / numPlanes
+        for satID in satIDs:
 
-        for sat in range(numSatsPerPlane):
-
-            trueAnomaly = sat * 360 / numSatsPerPlane
-            satName = 'OneWeb%02d%02d' % (plane, sat)
-            satObj = stk_sat.add(sc, satName, alt, alt, inc, raan, trueAnomaly)
-            stk_sat.graphics(satObj, graphics.OneWeb)
+            plane = int(satID/100)
+            sat = satID % 100
+            raan = 0 + plane * 360 / numPlanes
+            satObj = createSatellite(sc, plane, sat, alt, inc, raan)
             satObjs.append(satObj)
             print('.',end='')
-    
+
+    else:
+
+        for plane in range(numPlanes):
+
+            raan = 0 + plane * 360 / numPlanes
+
+            for sat in range(numSatsPerPlane):
+
+                satObj = createSatellite(sc, plane, sat, alt, inc, raan)
+                satObjs.append(satObj)
+                print('.',end='')
+
+            print('\n')
+
     return satObjs
 
 def addSNPs(sc):
