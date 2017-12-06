@@ -45,3 +45,8 @@ def current():
     r = root(a)
     sc = root.CurrentScenario
     return sc, r, a
+
+def clear(sc):
+    allChildren = sc.Children
+    for k in range(allChildren.count):
+        allChildren.item(k).unload()
