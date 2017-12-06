@@ -49,4 +49,4 @@ def current():
 def clear(sc):
     allChildren = sc.Children
     for k in range(allChildren.count):
-        allChildren.item(k).unload()
+        allChildren.item(0).unload()
