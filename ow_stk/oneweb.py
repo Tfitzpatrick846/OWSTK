@@ -89,7 +89,10 @@ def addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
 
     return satObjs
 
-def addSNPs(sc):
+def addSNPs(sc, snpIDs=[]):
+    """ Add the OneWeb SNP sites
+    If IDs are provided, the numbering is the order of the rollout
+    """
 
     snpBook = xlrd.open_workbook(snpListFilename)
     snpSheet = snpBook.sheet_by_index(0)
@@ -105,9 +108,15 @@ def addSNPs(sc):
             lat.append(snpSheet.cell_value(rowx=k, colx=3))
             lon.append(snpSheet.cell_value(rowx=k, colx=4))
 
+    if not snpIDs:
+        snpIDs = list(range(len(label)))
+
     for k in range(len(label)):
 
+        if k in snpIDs:
+
             facility.add(sc, label[k], lat[k], lon[k])
+            print('.',end='')
 
 def attachUserAntennas(sat):
 
