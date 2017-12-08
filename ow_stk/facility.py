@@ -7,7 +7,7 @@ def add(sc, name, lat, lon):
     facility = sc.Children.New(STKObjects.eFacility, name)
     facility2 = facility.QueryInterface(STKObjects.IAgFacility)
     facility2.Position.AssignGeodetic(lat, lon, 0)
-    return facility2
+    return facility
 
 def graphics(facility, profile):
 
