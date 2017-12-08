@@ -2,8 +2,8 @@ import comtypes
 from comtypes.gen import STKUtil, STKObjects
 
 
-def fromTo(fromObj, toObj):
+def compute(fromObj, toObj):
     
     access = fromObj.GetAccessToObject(toObj)
     access.ComputeAccess()
-    
+    return access
