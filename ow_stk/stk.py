@@ -1,6 +1,8 @@
 from win32api import GetSystemMetrics
 import comtypes
 from comtypes.client import CreateObject, GetActiveObject
+from comtypes.gen import STKUtil, STKObjects
+import datetime
 
 def app():
     try:
@@ -50,3 +52,22 @@ def clear(sc):
     allChildren = sc.Children
     for k in range(allChildren.count):
         allChildren.item(0).unload()
+
+def setTimePeriod(sc, startTime, stopTime):
+    # accepts datetime objects from datetime package
+
+    def datetime2str(dt):
+        day = '%02d' % dt.day
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        month = months[dt.month - 1]
+        year = '%04d' % dt.year
+        hour = '%02d' % dt.hour
+        minute = '%02d' % dt.minute
+        second = '%02d' % dt.second
+        millisecond = '%03d' % (dt.microsecond/1000)
+        return day + ' ' + month + ' ' + year + ' ' + hour + ':' + minute + ':' + second + '.' + millisecond
+
+    sc2 = sc.QueryInterface(STKObjects.IAgScenario)
+    startTimeStr = datetime2str(startTime)
+    stopTimeStr = datetime2str(stopTime)
+    sc2.SetTimePeriod(startTimeStr, stopTimeStr)
