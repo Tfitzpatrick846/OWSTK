@@ -97,10 +97,6 @@ def addSNPs(sc, snpIDs=[]):
     If IDs are provided, the numbering is the order of the rollout
     """
 
-    # if a single element is provided, make it a 1 element list
-    if type(snpIDs) is not list:
-        snpIDs = [snpIDs]
-    
     snpBook = xlrd.open_workbook(snpListFilename)
     snpSheet = snpBook.sheet_by_index(0)
 
@@ -118,12 +114,26 @@ def addSNPs(sc, snpIDs=[]):
     if not snpIDs:
         snpIDs = list(range(len(label)))
 
-    for k in range(len(label)):
+    if type(snpIDs) is list:
 
-        if k in snpIDs:
+        facilities = []
 
-            facility.add(sc, label[k], lat[k], lon[k])
-            print('.',end='')
+        for k in range(len(label)):
+
+            if k in snpIDs:
+
+                facilities.append(facility.add(sc, label[k], lat[k], lon[k]))
+                print('.',end='')
+    else:
+
+        for k in range(len(label)):
+
+            if k == snpIDs:
+
+                facilities = facility.add(sc, label[k], lat[k], lon[k])
+                print('.',end='')
+
+    return facilities
 
 def attachUserAntennas(sat):
 
