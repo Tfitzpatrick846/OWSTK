@@ -41,7 +41,7 @@ def add(sc, name, apogee, perigee, inc, raan, trueAnomaly, argper=0):
 
     # assign the state and propagate
     satProp.InitialState.Representation.Assign(keplerian)
-    satProp.Propagate()
+    propagate(sat)
 
     return sat
 
@@ -63,7 +63,18 @@ def graphics(sat, profile):
 
     return g
 
+def propagate(sats):
 
-def attachSensor(sat, sensor):
+    if type(sats) is not list:
+        sats = [sats]
 
-    pass
+    for sat in sats: 
+        # create the interface
+        sat2 = sat.QueryInterface(STKObjects.IAgSatellite)
+
+        # set the propagator
+        satProp = sat2.Propagator
+        satProp = satProp.QueryInterface(STKObjects.IAgVePropagatorJ2Perturbation)
+
+        # propagate
+        satProp.Propagate()

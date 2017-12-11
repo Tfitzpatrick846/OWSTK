@@ -28,7 +28,7 @@ def addFixed(obj, name, shape, dim1, dim2, az = 0, el = 90):
         else:
 
             raise ValueError('Unsupported sensor pattern')
-        
+ 
         return sensor
 
     sensors = []
