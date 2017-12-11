@@ -56,6 +56,9 @@ def addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
         stk_sat.graphics(satObj, graphics.OneWeb)
         return satObj
     
+    # if a single element is provided, make it a 1 element list
+    if type(satIDs) is not list:
+        satIDs = [satIDs]
     
     alt = 1200
     inc = 87.9
@@ -94,6 +97,10 @@ def addSNPs(sc, snpIDs=[]):
     If IDs are provided, the numbering is the order of the rollout
     """
 
+    # if a single element is provided, make it a 1 element list
+    if type(snpIDs) is not list:
+        snpIDs = [snpIDs]
+    
     snpBook = xlrd.open_workbook(snpListFilename)
     snpSheet = snpBook.sheet_by_index(0)
 
