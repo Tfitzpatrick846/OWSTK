@@ -4,6 +4,8 @@ from comtypes.gen import STKUtil, STKObjects
 
 
 def add(sc, name, apogee, perigee, inc, raan, trueAnomaly, argper=0):
+    """Add a satellite."""
+
     # create the satellite object
     sat = sc.Children.New(STKObjects.eSatellite, name)
 
