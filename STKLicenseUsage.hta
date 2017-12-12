@@ -1,0 +1,1222 @@
+<!--
+
+  Feel free to edit this utility.  My goal was to create a simple user interface
+  with as few controls as possible, yet provide a maximum amount of information.
+
+  Last updated: 05-dec-2011 (replaces ntLicDisplayExclude9.htm)
+  Last updated: 19-apr-2013 (replace reading StdOut with redirect to a tmp file)
+  Last updated: 12-jun-2014 (fixed reading file/env var when multiple SERVER info is available as in triad setup)
+  Last updated: 02-nov-2015 (search for both 64- and 32-bit STK installs)
+  Last updated: 11-jan-2016 (fixed an issue with finding STKv11 x64 User config path)
+
+
+  Any problems/suggestions, let me know - support@agi.com (attn Mike)
+
+-->
+
+<html>
+	<head>
+		<title> License Usage </title>
+		<meta name=language content=EN>
+		<HTA:APPLICATION Navigable ="yes">
+
+		<script language="JavaScript">
+
+			////////////////////////////////////////
+			// BEGIN user configurable parameters //
+			////////////////////////////////////////
+
+				var excludeColor  = "#ff7d7d";	// these three color options need to be different
+				var includeColor  = "#ccccff";
+				var notexcludable = "#ece9d8";
+				var useLongNames  = 1;
+				var showUsers     = 1;
+				var showLicInfo   = 1;
+				var showLmstat    = 0;
+
+				// This utility can be used to monitor any FLEX daemon, just add them to the list below.
+				// Several are already provided - just uncomment them (remove the leading //)'
+				var availDAEMON = new Array();
+				availDAEMON["AGI"]     = "STKD";
+				availDAEMON["Phoenix"] = "RODEO";
+				//availDAEMON["Matlab"]  = "MLM";
+				//availDAEMON["MÄK"]     = "MAKLMGRD";
+				//availDAEMON["Qualnet"] = "parsec";
+
+			//////////////////////////////////////
+			// END user configurable parameters //
+			//////////////////////////////////////
+
+			// feature to license name (LongNames);
+			var feature = new Array();
+			if (useLongNames == 1){
+				feature["4DASatSen"]					= "Satellite and Sensor Analyst for ArcGIS";
+				feature["4DX"]							= "AGI Embedded Technology - Deployment";
+				feature["4DXBundle"]					= "AGI Embedded Technology - Development";
+				feature["4DXDev"]						= "4DX Development License";
+				feature["4DXUX"]						= "AGI Embedded Technology - UNIX Deployment";
+				feature["ADVCAT"]						= "Advanced CAT";
+				feature["AMM"] 							= "Aircraft Mission Modeler/Aviator";
+				feature["AMMPro"] 						= "Aviator Pro";
+				feature["AnalysisWB"] 					= "Analysis Workbench";
+				feature["ASTG"]							= "Astrogator";
+				feature["ATB"]							= "Aerospace Toolbox";
+				feature["ATBPro"]						= "Aerospace Toolbox Pro";
+				feature["ATT"]							= "Attitude";
+				feature["ATTPROF"]						= "Attitude Profile";
+				feature["AdvHPOP"]						= "Advanced High Precision Orbit Propagator";
+				feature["AgRt3"]						= "Real-Time Tracking Tool Framework";
+				feature["Analyzer"]						= "STK/Analyzer";
+				feature["CAT"]							= "Conjunction Analysis Tool";
+				feature["CB_Creation"] 					= "STK/Central Body Creation";
+				feature["CON"]							= "Connect";
+				feature["COV"]							= "Coverage";
+				feature["CRM"]							= "Constellation Routing Module";
+				feature["Comm"]							= "Communications";
+				feature["DIS"]							= "Distributed Interactive Simulation";
+				feature["DSim"]							= "Distributed Simulation - RT3 Plug-in extension";
+				feature["DarwinPlugIn"]					= "Analyzer - Optimizer Plugin";
+				feature["DesignExplorer"]				= "Analyzer - Optimizer Plugin";
+				feature["DesignExplorerGator"]			= "Analyzer - Optimizer Plugin";
+				feature["DesignVisualization"]			= "Analyzer - Optimizer Plugin";
+				feature["GradientOptimizer"]			= "Analyzer - Optimizer Plugin";
+				feature["EOIR"] 						= "Electro-Optical Infrared Sensor Performance";
+				feature["GDM"] 							= "GeoDynamic Display Manager";
+				feature["GIS"] 							= "Geographical Information System";
+				feature["GISAnalyst"] 					= "GIS Analyst Extension";
+				feature["GLBMGR"] 						= "Globe Manager";
+				feature["HREIFOTE"] 					= "High Res Earth Imagery - Face Of The Earth";
+				feature["HREIFOTEA"] 					= "High Res Earth Imagery Adv- Face Of The Earth Adv";
+				feature["HREIGEO"] 						= "High Res Earth Imagery - The Geosphere Image";
+				feature["HREIPE"] 						= "High Res Earth Imagery - Planet Earth Imagery";
+				feature["HRM"] 							= "High Resolution Maps";
+				feature["IFT"] 							= "Interceptor Flight Tool";
+				feature["ISCache"]						= "InterSystems Cache for Real-Time Tracking Tool Archiving";
+				feature["MCO"] 							= "Model Center Optimizer";
+				feature["MCT"] 							= "Missile Conversion Tool";
+				feature["MDT"] 							= "Missile Design Tool";
+				feature["MDTFlyout"] 					= "Missile Design Tool Flyout";
+				feature["MFT"] 							= "Missile Flight Tool";
+				feature["MexCon"] 						= "MATLAB Interface";
+				feature["MexServ"] 						= "MATLAB Interface";
+				feature["MicrosoftVE"] 					= "Microsoft Bing Maps";
+				feature["MisSys"] 						= "Missile System";
+				feature["ModelCenterCarpetPlot"]		= "Analyzer Plugin";
+				feature["ModelCenterCarpetPlot_Expert"]	= "Analyzer Plugin";
+				feature["ModelCenterDOE"]				= "Analyzer Plugin";
+				feature["ModelCenterDOE_Expert"]		= "Analyzer Plugin";
+				feature["ModelCenterOptimizer"]			= "Analyzer Plugin";
+				feature["ModelCenterParmStudy"]			= "Analyzer Plugin";
+				feature["ModelCenterParmStudy_Expert"]	= "Analyzer Plugin";
+				feature["ModelCenterRun"]				= "Analyzer Plugin";
+				feature["ModelCenterRun_Expert"]		= "Analyzer Plugin";
+				feature["ModelCenterSaveLoad"]			= "Analyzer Plugin";
+				feature["ModelCenterSaveLoad_Expert"]	= "Analyzer Plugin";
+				feature["ModelCenterServerMode"]		= "Analyzer Plugin";
+				feature["ModelCenterServerMode_Expert"]	= "Analyzer Plugin";
+				feature["MPT"]							= "Maneuver Processing Tool";
+				feature["DataVisualizer"]				= "Analyzer Plugin";
+				feature["NTK"] 							= "Navigation Tool Kit";
+				feature["NTKPayload"] 					= "Navigation Tool Kit - Payload Planner";
+				feature["NavTK"] 						= "Navigation Tool Kit";
+				feature["NavTKPayload"] 				= "Navigation Tool Kit - Payload Planner";
+				feature["ODMSS"] 						= "OD Multiple Satellite Filter";
+				feature["ODSIM"] 						= "OD Simulation";
+				feature["ODSNGL"]	 					= "OD Single Satellite Filter";
+				feature["PODS"] 						= "Precision Orbit Determination System";
+				feature["PODS2000"] 					= "Precision Orbit Determination System";
+				feature["PRO"] 							= "Professional";
+				feature["RSS"] 							= "Raku Symbol Server (2525b)";
+				feature["RT3Client"]					= "Real-Time Tracking Tool - Deployment";
+				feature["RT3Dev"]						= "Real-Time Tracking Tool - Developement key";
+				feature["RT3Server"]					= "Real-Time Tracking Tool Framework Server Component";
+				feature["RTNavDATA"] 					= "Real-Time Navigation Data Service";
+				feature["RdrAdvEn"] 					= "Radar Advanced Environment";
+				feature["RdrAdvEnClutterLogFile"] 		= "Radar Advanced Environment Clutter Log File";
+				feature["SCACAT"] 						= "Super Covariance Adv CAT";
+				feature["SCHED"] 						= "Scheduler";
+				feature["SEET"]							= "Space Environment and Effects Tool";
+				feature["SQL"] 							= "System Query Language";
+				feature["SRV"] 							= "STK Application Server";
+				feature["STK"] 							= "STK Basic Edition";
+				feature["STKAVO"] 						= "Advanced Visualization Option";
+				feature["STKCAP"] 						= "Civil Air Patrol Bundle";
+				feature["STKEDU"] 						= "Educational Bundle";
+				feature["STKEngRuntime"]	 			= "STK Engine Runtime";
+				feature["STKEngRuntimeUX"] 				= "STK Engine Runtime for UNIX";
+				feature["STKExpert"] 					= "STK Expert Edition";
+				feature["STKIntegration"] 				= "STK Integration";
+				feature["STKMpiNode"] 					= "STK Message Passing Interface Node";
+				feature["STKPL"] 						= "STK Programmer's Library";
+				feature["STKProfessional"] 				= "STK Professional Edition";
+				feature["STKTandE"]						= "STK Test and Evaluation";
+				feature["STKTerrainServer"]				= "STK Terrain Server";
+				feature["STKTIM"] 						= "STK Terrain, Imagery & Maps";
+				feature["STKVO"] 						= "Visualization Option";
+				feature["SatSoftPAM"] 					= "SatSoft Phased Array Model";
+				feature["SpEn"] 						= "Space Environment";
+				feature["TERN"] 						= "Terrain";
+				feature["TIREM"]	 					= "Terrain Integrated Rough Earth Model";
+				feature["TLD"] 							= "Temporal Lattice Data";
+				feature["UProp"] 						= "Urban Propagation Extension for STK/Communication";
+				feature["USGOV"] 						= "US Government License";
+				feature["Undersea"] 					= "STK/Undersea";
+				feature["ViewerPro"] 					= "AGI Viewer Pro";
+				feature["WEBC"]							= "WebCast using Real Media";
+				feature["WEBCWinMed"]					= "WebCast using Windows Media";
+				}
+
+			// licenses that are EXCLUDABLE by STK
+			var excludable = new Array();
+			excludable["SatPro"]          = 1;
+			excludable["4DXBundle"]       = 1;
+			excludable["4DXDev"]          = 1;
+			excludable["AMM"]             = 1;
+			excludable["AMMPro"]          = 1;
+			excludable["AnalysisWB"]      = 1;
+			excludable["ASTG"]            = 1;
+			excludable["ATT"]             = 1;
+			excludable["ATTPROF"]         = 1;
+			excludable["AdvHPOP"]         = 1;
+			excludable["CAT"]             = 1;
+			excludable["CB_Creation"]     = 1;
+			excludable["CHAINS"]          = 1;
+			excludable["CON"]             = 1;
+			excludable["COV"]             = 1;
+			excludable["CRM"]             = 1;
+			excludable["Comm"]            = 1;
+			excludable["DIS"]             = 1;
+			excludable["DSim"]            = 1;
+			excludable["EOIR"]            = 1;
+			excludable["GIS"]             = 1;
+			excludable["GLBMGR"]          = 1;
+			excludable["HRM"]             = 1;
+			excludable["MicrosoftVE"]     = 1;
+			excludable["MisSys"]          = 1;
+			excludable["PODS"]            = 1;
+			excludable["PODS2000"]        = 1;
+			excludable["PRO"]             = 1;
+			excludable["RSS"]             = 1;
+			excludable["RT3Client"]       = 1;
+			excludable["Radar"]           = 1;
+			excludable["RdrAdvEn"]        = 1;
+			excludable["SEET"]            = 1;
+			excludable["SOLIS"]           = 1;
+			excludable["STKAVO"]          = 1;
+			excludable["STKVO"]           = 1;
+			excludable["STKAuthor"]       = 1;
+			excludable["STKCAP"]          = 1;
+			excludable["STKEDU"]          = 1;
+			excludable["STKExpert"]       = 1;
+			excludable["STKIntegration"]  = 1;
+			excludable["STKProfessional"] = 1;
+			excludable["STKTIM"]          = 1;
+			excludable["SpEn"]            = 1;
+			excludable["TERN"]            = 1;
+			excludable["TIREM"]           = 1;
+			excludable["USGOV"]           = 1;
+			excludable["UProp"]           = 1;
+			excludable["Undersea"]        = 1;
+
+			// usage messages
+			var message1 = "<br>This utility will display features served by the selected DAEMON on the server specified.";
+			var message2 = "This utility will display features served by the selected DAEMON on the server specified. If on an STK client, you can configure STK by directing the application not to check out specific licenses (this is version specific). The grid of features below will be color-coded to indicate the license check-out state. You can toggle the check-out state by selecting the desired feature in the grid. STK must be restarted for any changes to take effect.";
+
+			var ActiveX_Control = 1;
+			try {
+				WSHShell = new ActiveXObject("WScript.Shell");
+				fso      = new ActiveXObject("Scripting.FileSystemObject");
+				try {
+
+					// current directory path
+					var Cwd = window.location.pathname;
+					Cwd = Cwd.replace(/\//g,"\\").replace(/%20/g, " ").slice(1);
+					Cwd = Cwd.slice(0,Cwd.lastIndexOf("\\"));
+					Cwd = Cwd + "\\";
+
+					// global variables
+					var username      = WSHShell.ExpandEnvironmentStrings("%USERNAME%");
+					var lmutilPath    = find_lmutil();
+					var features      = new Array();
+					var totalLics     = new Array();
+					var usedLics      = new Array();
+					var users         = new Array();
+					var reserve       = new Array();
+					var licEx         = new Array();
+					var myhostsSource = new Array();
+					var lmstatI       = new Array();
+					var numOfColumns  = 1;
+					var STKversion;
+					var selHOST;
+					var selDAEMON;
+					var STKHome;
+					var selCell;
+					var isClient;
+					var lmstat;
+					var tmpPath = WSHShell.expandenvironmentstrings(WSHShell.Environment("User")("TMP") || WSHShell.Environment("User")("TEMPA") || WSHShell.Environment("System")("TMP") || WSHShell.Environment("System")("TEMP")) + "\\lmutilOutput.txt";
+					var busy = new Array(2);
+					var InstallHome = [];
+					var ConfigDir = [];
+					}
+				catch (err){
+					//alert (err.description);
+					}
+				}
+			catch (er) {
+				//alert (er.description);
+				ActiveX_Control = 0;
+				}
+
+
+			// -------------------------------------------------------------------------------------------------------------------------------------//
+
+			function init() {
+
+				if (! ActiveX_Control){
+					myControls.style.display = "none";
+					keyTable.style.display   = "none";
+					desc.innerHTML = "<br><img src=\"f-arrow.gif\"> Your browser security settings do not allow ActiveX objects.\n\nYou can set the \"Internet Security/Local intranet/Custom level.../ActiveX controls and plugins/Initialize and script ActiveX controls not marked as safe for scripting\" to \'Prompt\' or \'Enable\'.\n\nIf you can not change the security settings, then rename this file to have a .hta extension, which will allow you to run it as a stand-along (trusted) application.<br><br>";
+					return;
+					}
+
+				else {
+
+					// get available STK versions
+					get_installed_versions();
+					get_selected_version();
+
+					// reset gui if not STK client
+					if (! STKHome){
+						StartSTK.style.display    = "none";
+						keyTable.style.display    = "none";
+						versionSel.style.display  = "none";
+						isClient                  = 0;
+						}
+					else {
+						isClient                  = 1;
+						}
+
+					// populate 'DAEMON Vendor' selection, and hide if only one available
+					for (var i in availDAEMON){
+						daemons.length = daemons.length + 1;
+						daemons.options[daemons.length-1].text = i;
+						daemons.options[daemons.length-1].title = availDAEMON[i];
+						}
+					if (daemons.length == 1){
+						daemonSel.style.display = 'none';
+						message1 = message1.replace("selected DAEMON", daemons.options[0].text + " deamon");
+						message2 = message2.replace("selected DAEMON", daemons.options[0].text + " deamon");
+						}
+					get_selected_daemon();
+
+					// set keyTable colors
+					key1.bgColor = includeColor;
+					key2.bgColor = excludeColor;
+					key3.bgColor = notexcludable;
+
+					// get excluded licenses
+					get_currently_excluded_licenses();
+
+					hostchange();
+					}
+				}
+
+			function get_currently_excluded_licenses () {
+					licEx.length = 0;
+					try {
+						licExFile = fso.OpenTextFile(ConfigDir[STKversion] + "\\exclude.agilicex",1);
+						ra  = licExFile.ReadAll();
+						licExFile.Close();
+						licEx = ra.split(/[\n\r\f]/g);
+						}
+					catch (er) {
+						licEx = new Array();
+						}
+					licEx.sort();
+					return (licEx);
+				}
+
+			function get_selected_version () {
+				for (var i=0; i < versions.length; i++) {
+					if (versions.options[i].selected == true) {
+						STKversion = versions.options[i].text;
+						}
+					}
+
+				StartSTK.title = "Start STKv" + STKversion;
+				STKHome = InstallHome[STKversion];
+				get_currently_excluded_licenses();
+				redraw_grid();
+
+				}
+
+			function get_selected_daemon () {
+
+				// select the server to be the first in the list when changeing the daemon
+				try {
+					hosts.options[0].selected = true;
+					hostchange();
+					}
+				catch(er){
+					// do nothing
+					}
+				for (var i=0; i < daemons.length; i++) {
+					if (daemons.options[i].selected == true) {
+						selDAEMON = availDAEMON[daemons.options[i].text];
+						}
+					}
+
+				if ((selDAEMON == "STKD") && (isClient)){
+					StartSTK.style.display   = "block";
+					keyTable.style.display   = "block";
+					if (versions.length > 1){
+						versionSel.style.display = 'block';
+						}
+					desc.innerHTML = message2;
+					}
+				else {
+					StartSTK.style.display   = "none";
+					keyTable.style.display   = "none";
+					versionSel.style.display = "none";
+					desc.innerHTML = message1;
+					}
+
+				get_license_file_search_paths();
+
+				}
+
+			function get_license_file_search_paths () {
+				path    = new Array();
+
+				// check system & user env var daemon_LICENSE_FILE
+				var buf=[];
+				var en=new Enumerator(WSHShell.Environment("System"))
+				for(;!en.atEnd();en.moveNext())
+				buf.push(en.item());
+				en=new Enumerator(WSHShell.Environment("User"))
+				for(;!en.atEnd();en.moveNext())
+				buf.push(en.item());
+				buf.sort();
+				for (var i = 0; i < buf.length; i++){
+					if ((buf[i].match(/^LM_LICENSE_FILE=/))||(buf[i].match(selDAEMON + "_LICENSE_FILE="))){
+						tmp = buf[i].split("=");
+						pth = tmp[1].split(";");
+						for (var j=0; j<pth.length;j++){
+							path = path.concat(pth[j]);
+							myhostsSource[pth[j]] = tmp[0];
+							}
+						}
+					}
+
+				// check registry for daemon_LICENSE_FILE
+				try {
+					path = path.concat(WSHShell.RegRead("HKLM\\Software\\FLEXlm License Manager\\" + selDAEMON + "_LICENSE_FILE").split(";"));
+					}
+				catch (er) {
+					// daemon_LICENSE_FILE not in registry
+					}
+
+				// check if machine is an AGI License Server (this is the default used by the AGI License Server install)
+				if (selDAEMON == "STKD"){
+					try {
+						path = path.concat(WSHShell.RegRead("HKLM\\Software\\FLEXlm License Manager\\AGI License Server\\License").split(";"));
+						}
+					catch (er) {
+						// not a default isntall of the AGI License Server
+						}
+					}
+
+				// look in local directory
+				path.push(Cwd);
+
+				// add all STK ConfigDir`s
+				for (var key in ConfigDir){
+					path.push(ConfigDir[key]);
+					}
+
+				// add all STK InstallHome`s
+				for (var key in InstallHome){
+					path.push(InstallHome[key] + "bin");
+					path.push(InstallHome[key] + "bin\\LicenseData");
+					}
+
+				get_SERVER_info_from_paths(path);
+
+				}
+
+			function get_SERVER_info_from_paths(path) {
+				//	--------------------------------------------
+				//	Get SERVER info from paths
+				//	--------------------------------------------
+
+				myhosts       = new Array();
+
+				files = new Array();
+
+				for (var i = 0; i < path.length; i++){
+					//alert(path[i]);
+					try {
+						f = fso.GetFile(path[i]);
+						files.push(path[i]);
+						look_for_SERVER_info(path[i]);
+						}
+					catch (er) {
+						try {
+							f = fso.GetFolder(path[i]);
+							fc = new Enumerator(f.files);
+							for (; !fc.atEnd(); fc.moveNext()) {
+								// lets look for lmutil.exe while seaching for license files/server names
+								//if (fc.item().Name.match("lmutil\.exe")){
+								//	lmutilPath = fc.item();
+								//	}
+								if ((fc.item().Name.match(/\.lic$/)) || (fc.item().Name.match(/\.dat$/))|| (fc.item().Name.match(/\.off$/))){
+									files.push(fc.item());
+									look_for_SERVER_info(fc.item());
+									}
+								}
+							}
+						catch (er) {
+							if (path[i].match(/\@/)){
+								myhosts.push(path[i]);
+								}
+							}
+						}
+					}
+
+				// Sort and Remove duplicates
+				myhosts.sort();
+				for (v in myhosts){
+					if (myhosts[v] == myhosts[v-1]) {
+						myhosts.splice(v,1);
+						}
+					}
+
+				// add default options
+				myhosts.push("@localhost");
+				myhosts.push("User Defined -->");
+
+				// populate pull-down menu
+				hosts.length = myhosts.length;
+				for (var i = 0; i<=hosts.length -1; i++){
+					hosts.options[i].text = myhosts[i];
+					if (myhostsSource[myhosts[i]]){
+						hosts.options[i].title = myhostsSource[myhosts[i]];
+						}
+					}
+				}
+
+			function look_for_SERVER_info (thisfile) {
+				try {
+					myf = fso.OpenTextFile(thisfile,1);
+					}
+				catch (er) {
+					return;
+					}
+
+				licdata = myf.ReadAll();
+				myf.Close();
+
+				try{
+
+					serverinfo = licdata.match(/SERVER .*\n/g);
+					daemoninfo = licdata.match(selDAEMON);
+
+					if ((serverinfo[0] == null) || (selDAEMON != daemoninfo)){
+						return ;
+						}
+
+					for (var i = 0; i < serverinfo.length; i++){
+						sinfo = serverinfo[i].split(" ");
+						if (sinfo[3]){
+							myhosts.push(sinfo[3].replace(/[\n\f\r]/g,"") + "@" + sinfo[1]);
+							myhostsSource[myhosts[myhosts.length-1]] = thisfile;
+							}
+						else {
+							myhosts.push("@" + sinfo[1]);
+							myhostsSource[myhosts[myhosts.length-1]] = thisfile;
+							}
+						}
+					}
+				catch(er) {
+					// do nothing
+					}
+
+				return;
+				}
+
+			function find_lmutil(){
+
+				var myPath = "";
+
+				if (lmutilTest = fso.FileExists(Cwd + "lmutil.exe")){
+					myPath = Cwd + "lmutil.exe";
+					}
+
+				//	--------------------------------------------
+				// look in additional locations if not found
+				//	--------------------------------------------
+				if (! myPath){
+					// look in license server install path
+					try {
+						Lmgrd = WSHShell.RegRead("HKLM\\Software\\FLEXlm License Manager\\AGI License Server\\Lmgrd");
+						if (lmutilTest = fso.FileExists(Lmgrd.replace("lmgrd.exe","lmutil.exe"))){
+							myPath = Lmgrd.replace("lmgrd.exe","lmutil.exe");
+							}
+						}
+					catch (er) {
+						// not an AGI license server machine
+						}
+					}
+				if (! myPath){
+					// look in License Manager directory
+					try {
+						LicManager = WSHShell.RegRead("HKLM\\Software\\AGI\\LicenseManager\\InstallHome");
+						if (lmutilTest = fso.FileExists(LicManager + "bin\\lmutil.exe")){
+							myPath = LicManager + "bin\\lmutil.exe";
+							}
+						}
+					catch (er) {
+						// LicManager not installed
+						}
+					}
+
+				if (! myPath){
+					myControls.style.display = "none";
+					alert ("Cannot find lmutil.exe!\n\nSearch path includes local directory, AGI License Server directory, and LicenseManager/bin directory.");
+					return;
+					}
+				return (myPath);
+				}
+
+			function get_installed_versions () {
+				//	--------------------------------------------
+				// get installed versions - look for v7 -> v20
+				//	--------------------------------------------
+				for (var vers = 20; vers >= 7; vers--){
+					try {
+						sValue = WSHShell.RegRead("HKLM\\Software\\AGI\\STK\\" + vers + ".0\\DisplayVersion");
+						InstallHome[sValue + " (32 bit)"] = WSHShell.RegRead("HKLM\\Software\\AGI\\STK\\" + vers + ".0\\InstallHome");
+						ConfigDir[sValue + " (32 bit)"]   = WSHShell.RegRead("HKCU\\Software\\AGI\\STK\\" + vers + ".0\\ConfigDir")
+						//alert (sValue + " (32 bit)\n" + "InstallHome=" + InstallHome[sValue + " (32 bit)"] + "\n" + "ConfigDir=" + ConfigDir[sValue + " (32 bit)"]);
+						versions.length = versions.length + 1;
+						versions.options[versions.length-1].text = sValue + " (32 bit)";
+						}
+					catch (er) {
+						// not a client (STK not installed or not run as user)
+						}
+					}
+
+				// look for 64 bit
+				var HKEY_LOCAL_MACHINE = 0x80000002;
+				for (var vers = 20; vers >= 11; vers--){
+					try {
+						sValue = ReadRegStr(HKEY_LOCAL_MACHINE, "SOFTWARE\\AGI\\STK\\" + vers + ".0", "DisplayVersion", 64);
+						if (sValue){
+							InstallHome[sValue + " (64 bit)"] = ReadRegStr(HKEY_LOCAL_MACHINE, "SOFTWARE\\AGI\\STK\\" + vers + ".0", "InstallHome", 64);
+
+							// fixed 11-jan-2016
+							ConfigDir[sValue + " (64 bit)"]   = WSHShell.RegRead("HKCU\\Software\\AGI\\STK (x64)\\" + vers + ".0\\ConfigDir")
+							// -----------------
+
+							versions.length = versions.length + 1;
+							versions.options[versions.length-1].text = sValue + " (64 bit)";
+							}
+						}
+					catch (er) {
+						// not a client (STK not installed or not run as user)
+						}
+					}
+
+
+				if (versions.length <= 1){
+					// only one version or none installed
+					versionSel.style.display  = "none";
+					}
+				}
+
+// Reads a REG_SZ value from the local computers registry using WMI.
+// Parameters:
+//   RootKey - The registry hive (see http://msdn.microsoft.com/en-us/library/aa390788.aspx for possible values).
+//   Key - The key that contains the needed value.
+//   Value - The value to get.
+//   RegType - The registry bitness: 32 or 64.
+function ReadRegStr (RootKey, KeyName, ValueName, RegType)
+{
+  var oCtx = new ActiveXObject("WbemScripting.SWbemNamedValueSet");
+  oCtx.Add("__ProviderArchitecture", RegType);
+
+  var oLocator = new ActiveXObject("WbemScripting.SWbemLocator");
+  var oWMI = oLocator.ConnectServer("", "root\\default", "", "", "", "", 0, oCtx);
+  var oReg = oWMI.Get("StdRegProv");
+
+  var oInParams = oReg.Methods_("GetStringValue").Inparameters;
+  oInParams.Hdefkey = RootKey;
+  oInParams.Ssubkeyname = KeyName;
+  oInParams.Svaluename = ValueName;
+
+  var oOutParams = oReg.ExecMethod_("GetStringValue", oInParams, 0, oCtx);
+  return oOutParams.SValue;
+}
+
+			function is_excludeable (f) {
+					if (excludable[f]){
+						return (0);
+						}
+					return (1);
+				}
+
+			function hostchange () {
+				// if 'User Defined ->' is selected, show manual entry
+				if (hosts.options[hosts.length-1].selected == true) {
+					hostcell.style.display = 'block';
+					}
+				else {
+					hostcell.style.display = 'none';
+					if (daemons.length == 1){
+						// if only one daemon is available, go ahead and perform the lmstat
+						display_lmstat();
+						}
+					}
+				}
+
+			function get_user_selected_host () {
+				// get the selected or user supplied port@host
+				if (hosts.options[hosts.length - 1].selected == true) {
+					if (host.value.indexOf("@") == -1){
+						host.value = "@" + host.value;
+						}
+					selHOST = host.value;
+					}
+				else {
+					for (var i=0; i < hosts.length - 1; i++) {
+						if (hosts.options[i].selected == true) {
+							selHOST = hosts.options[i].text;
+							}
+						}
+					}
+				}
+
+			function myTimer(){
+				datetime.value = busy[0];
+				busy.push(busy.shift());
+				}
+
+			function Run_getLmstat(command) {
+
+				busy[0] = " ";
+				busy[1] = "Querying server";
+				var MyTO = setInterval  ( "myTimer()", 222 );
+
+				WSHShell.Run("%COMSPEC% /c " + command + " > " + tmpPath,0,1);
+				var lmutilFile = fso.OpenTextFile(tmpPath,1);
+				var lmstat  = lmutilFile.ReadAll();
+				lmutilFile.Close();
+				fso.DeleteFile(tmpPath,1);
+
+				clearInterval ( MyTO );
+				return (lmstat);
+
+				}
+
+			function run_lmstat_and_parse () {
+
+				//
+				// run lmstat command
+				//
+
+				lmstat = Run_getLmstat("\"\"" + lmutilPath + "\" lmstat -a -S " + selDAEMON + " -c \"" + selHOST + "\"\"");
+
+				if (! lmstat){
+					alert ("Sorry! I didn't get and returned data from the server.");
+					return;
+					}
+
+				lmstat = lmstat.split(/[\n\r\f]/g);
+
+				// Get list of features from lmstat array by looking for "Users of..."
+				// also get total seats avaialble, in use, and users of features
+				features  .length = 0;
+				totalLics .length = 0;
+				usedLics  .length = 0;
+				users     .length = 0;
+				reserve   .length = 0;
+
+				getUsers_flag=0;
+				for (var i = 0; i < lmstat.length; i++){
+					if (getUsers_flag){
+						if (lmstat[i].match(/start/)){
+							usedLics[thisfeature]++;
+							tmp = lmstat[i].replace(/^\s+/,"");
+							tmp = tmp.split(/\s+/);
+							v = lmstat[i].match(/v\d+\.\d+/);
+							//users[thisfeature] += "</br>";
+							if (username == tmp[0]){
+								users[thisfeature] += "<img src=\"f-arrow.gif\">";
+								}
+							users[thisfeature] += "<nobr>" + tmp[0] + ":" + tmp[1] + "&nbsp;(" + v + "&nbsp;" + tmp[tmp.length-2] + "&nbsp;" + tmp[tmp.length-1] + ")</nobr><br>";
+							}
+						if (lmstat[i].match(/RESERVATION/)){
+							tmp = lmstat[i].replace(/^\s+/,"");
+							tmp = tmp.slice(0,tmp.lastIndexOf(" "));
+							reserve[thisfeature] += "</br>" + tmp;
+							}
+						}
+
+					if (tmp = lmstat[i].match(/Users of [^:\s]+:/)){
+						getUsers_flag=0;
+
+						thisfeature = tmp[0].replace("Users of ","").replace(":","");
+
+						// get total seats available (this will either be a number or 'uncounted'
+						if (licsCount = lmstat[i].match(/Total of \d+/g)){
+							totalLics[thisfeature] = licsCount[0].replace("Total of ","");
+							usedLics[thisfeature]  = "0";
+							getUsers_flag=1;
+							users[thisfeature] = "";
+							reserve[thisfeature] = "";
+							}
+						else if (licsCount = lmstat[i].match(/Uncounted/)){
+							totalLics[thisfeature] = "uncounted";
+							usedLics[thisfeature]  = "0";
+							getUsers_flag=1;
+							users[thisfeature] = "";
+							reserve[thisfeature] = "";
+							}
+						else if (licsCount = lmstat[i].match(/Error: \d+/g)){
+							continue;
+							}
+						else {
+							totalLics[thisfeature] = "unknown";
+							usedLics[thisfeature]  = "unknown";
+							}
+						features.push(thisfeature);
+						}
+					}
+				features.sort();
+				}
+
+			function redraw_grid() {
+
+
+				if (isClient && (selDAEMON == "STKD")){
+					document.getElementById('jens').style.display = "block";
+					}
+				else {
+					document.getElementById('jens').style.display = "none";
+					}
+
+				// delete all existing rows
+				while (oBody.rows.length){
+					oBody.deleteRow();
+					}
+
+				// loop through features and create the table
+				count = numOfColumns;
+				for (var i = 0; i<=features.length -1; i++){
+
+					// if feature ends in a digit, skip it
+					// these will be the numbered MMT lics - no need to display these
+					if ((features[i].replace(/\d$/,"") !== features[i]) && (selDAEMON == "STKD")){
+						continue;
+						}
+
+					// create new row when column count is reached
+					if (count == numOfColumns){
+						oRow = oBody.insertRow(-1);
+						count = 0;
+						}
+					count++;
+
+					// create the cell
+					oCell = oRow.insertCell(-1);
+					oCell.bgColor               = includeColor;
+					oCell.style.textAlign       = "left";
+					oCell.style.border          = "thin outset";
+					oCell.vAlign                = "top";
+					oCell.id                    = features[i];
+
+
+					if (isClient){
+						if (is_excludeable(features[i])){
+							oCell.bgColor = notexcludable;
+							}
+						else if (isExcluded(features[i])){
+							oCell.bgColor = excludeColor;
+							oCell.background = "no.gif";
+							}
+						else {
+							oCell.bgColor = includeColor;
+							}
+						}
+
+					// change cell text color if all seats are in use
+					if (totalLics[features[i]] == usedLics[features[i]]){
+						oCell.style.color  = "blue";
+						}
+
+					// create string to display in cell
+					mystring = "<center><u><B>";
+					if (feature[features[i]]){
+						mystring += feature[features[i]] + " (" + features[i] + ")";
+						}
+					else {
+						mystring += features[i];
+						}
+
+					mystring += "</B></u></br>Total&nbsp;Seats:" + totalLics[features[i]] + "</br>Seats&nbsp;in&nbsp;use:" + usedLics[features[i]] + "</center>";
+					if (lmstatI[features[i].substring(0,23)]){
+						mystring += lmstatI[features[i].substring(0,23)];
+						}
+
+					if ((showUsers == 1) && (users[features[i]])){
+						mystring += "<hr>" + users[features[i]];
+						if (reserve[features[i]]){
+							mystring += "<B>" + reserve[features[i]] + "</B>";
+							}
+						}
+					oCell.innerHTML = mystring;
+
+					}
+
+				}
+
+			function show_output_from_lmstat_command () { // force show if there is an ERROR or no features displayed
+				if ((lmstat.join().match("Error")) || (showLmstat == 1) || (features.length == 0)){
+					oRow = oBody.insertRow(-1);
+					oCell = oRow.insertCell(-1);
+					oCell.colSpan = numOfColumns;
+					oCell.style.border = "none";
+					oCell.id = "lmstat"
+					oCell.innerHTML = lmstat.join("</br>").replace(/\s\s+/g,"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+
+					}
+				if (lmstat.join().match("Error")) {
+					return (0)
+					}
+				return (1);
+				}
+
+			function lmstat_i_command () {
+
+				lmstatI = [];
+
+				if (showLicInfo == 1){
+					// run lmstat -i command
+					lmstati = Run_getLmstat("\"\"" + lmutilPath + "\" lmstat -i -c \"" + selHOST + "\"\"");
+
+					lmstati = lmstati.split(/[\n\r\f]/g);
+					for (var k = 1; k < 9 ; k++){// remove header lines
+						lmstati.shift();
+						}
+
+					for (var k = 0; k < lmstati.length ; k++){
+						var tmp = lmstati[k].split(/\s+/)
+
+						if (tmp[4] == selDAEMON){
+
+							if (tmp[2] == "0") {
+								tmp[2] = "Uncounted"
+								}
+
+							if (tmp[3].match("1-jan-0")) {
+								tmp[3] = "Permanent"
+								}
+							else {
+								tmp[3] = "Expires: " + tmp[3];
+								}
+
+							if (! lmstatI[tmp[0]]) { lmstatI[tmp[0]] = "" }
+							lmstatI[tmp[0]] += "<li><nobr>v" + tmp[1] + "; Seats: " + tmp[2] + "; " + tmp[3] + "</nobr>";
+
+							}
+						}
+					}
+				}
+
+			function display_lmstat () {
+				hosts.disabled = 1;
+				get_user_selected_host();
+				run_lmstat_and_parse();
+				get_currently_excluded_licenses();
+
+				// determine number of columes to display
+				numOfColumns = 1;
+				redraw_grid();
+				tw = oTable.offsetWidth + 20;
+				bw = document.body.clientWidth;
+				diff = bw - tw;
+				while ((diff > 0) && (numOfColumns < features.length)){
+					numOfColumns+= 1;
+					redraw_grid();
+					tw = oTable.offsetWidth + 20;
+					bw = document.body.clientWidth;
+					diff = bw - tw;
+					}
+
+				lmstat_i_command();
+				redraw_grid();
+				show_output_from_lmstat_command();
+
+				hosts.disabled = 0;
+				datetime.value = selDAEMON + ":" + selHOST + ":" + Date();
+				}
+
+			function isExcluded (f) {
+				for (test in licEx){
+					if (licEx[test] == f){
+						return (1);
+						}
+					}
+				return (0);
+				}
+
+			function selEACH () {
+				var iRow;
+				var oRow;
+				var iCell;
+				for (iRow = 0; iRow < oTable.rows.length; iRow++) {
+					oRow = oTable.rows[iRow];
+					for (iCell = 0; iCell < oRow.cells.length; iCell++) {
+						if (oRow.cells[iCell].bgColor == includeColor){
+							tableclick(oRow.cells[iCell]);
+							oRow.cells[iCell].style.border          = "thin outset";
+							}
+						}
+					}
+				}
+
+			function selNONE () {
+				var iRow;
+				var oRow;
+				var iCell;
+				for (iRow = 0; iRow < oTable.rows.length; iRow++) {
+					oRow = oTable.rows[iRow];
+					for (iCell = 0; iCell < oRow.cells.length; iCell++) {
+						if (oRow.cells[iCell].bgColor == excludeColor){
+							tableclick(oRow.cells[iCell]);
+							oRow.cells[iCell].style.border          = "thin outset";
+							}
+						}
+					}
+				}
+
+			function tableclick (sel) {
+				var iRow;
+				var oRow;
+				var iCell;
+				if (isClient){
+
+
+					if (! sel){
+
+						// get the ID of the cell clicked
+						try {
+							selCell = event.srcElement;
+							while (selCell.tagName.toLowerCase() != "td"){
+								selCell = selCell.parentNode;
+								}
+							}
+						catch (er){
+							alert (er.description);
+							return;
+							}
+						}
+
+					else {
+						selCell = sel;
+						}
+
+					// dont do anything if the lmstat output, or a
+					// non-excludable feature is selected
+					if ((selCell.id == "lmstat") || is_excludeable(selCell.id)){
+						return
+						}
+
+					selCell.style.border = "thin inset";
+
+					// toggle the color of the cell
+					if (selCell.bgColor == includeColor){
+						selCell.bgColor    = excludeColor;
+						selCell.background = "no.gif";
+						}
+					else {
+						selCell.bgColor    = includeColor
+						selCell.background = "";
+						}
+
+					// read entire table, get excluded IDs, and write to lic exclude file
+					// I don`t want to blindly rewrite the exclude file, as it may contain
+					// features not currently listed for the selected server
+					excludes = new Array();
+					includes = new Array();
+					for (iRow = 0; iRow < oTable.rows.length; iRow++) {
+						oRow = oTable.rows[iRow];
+						for (iCell = 0; iCell < oRow.cells.length; iCell++) {
+							if (oRow.cells[iCell].bgColor == excludeColor){
+								excludes.push(oRow.cells[iCell].id);
+								}
+							if (oRow.cells[iCell].bgColor == includeColor){
+								includes.push(oRow.cells[iCell].id);
+								}
+							}
+						}
+					// union/unique excludes and licEx
+					excludes = excludes.concat(licEx);
+					excludes.sort();
+					for (v in excludes){
+						if (excludes[v] == excludes[v-1]) {
+							excludes.splice(v,1);
+							}
+						}
+					// remove and includes in excludes
+					for (v in excludes){
+						for (x in includes){
+							if (includes[x] == excludes[v]){
+								excludes.splice(v,1);
+								}
+							}
+						}
+					// write exclude file
+					licExFile = fso.CreateTextFile(ConfigDir[STKversion] + "\\exclude.agilicex",1);
+					licExFile.writeline(excludes.join("\n"));
+					licExFile.Close();
+					}
+				}
+
+			function runstk () {
+				WSHShell.Exec (STKHome + "bin\\AgUiApplication.exe /pers \"STK\"");
+				}
+
+			function myMouseUp(){
+				if (selCell.style){
+					selCell.style.border          = "thin outset";
+					}
+				}
+
+			function resizeMe(){
+
+				oT = oTable.offsetWidth + 20;
+				bw = document.body.clientWidth;
+				sw = document.body.scrollWidth;
+
+				if (bw == sw){
+					//do nothing - there is no scroll bar!
+					//return;
+					}
+
+				else if ((bw < oT) && (numOfColumns > 1)){
+					numOfColumns = numOfColumns - 1;
+					redraw_grid();
+					show_output_from_lmstat_command();
+					//return;
+					}
+
+				else if ((bw > oT) && (numOfColumns < features.length)){
+					numOfColumns = numOfColumns + 1;
+					redraw_grid();
+					show_output_from_lmstat_command();
+					//return;
+					}
+
+				return;
+
+				}
+
+		</script>
+
+		<body style="filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1, StartColorStr='#FFFFC0', EndColorStr='#6699CC');"
+		     onLoad="init()"
+		     onresize="resizeMe()">
+
+			<table style="font:12px" border="0">
+				<tr>
+					<td title="19-apr-2013">
+						<b><u> License Usage </u></b>
+					</td>
+					<td rowspan="2">
+						<table  id="keyTable"  border="0" cellpadding="5" cellspacing="1" style="font:11px;">
+							<tr>
+								<td style="border:thin groove" id="key1">
+									<b>Available for check-out by STK</b>
+								</td>
+							</tr>
+							<tr>
+								<td style="border:thin groove" background="no.gif" id="key2">
+									<b>Will not be checked-out by STK</b>
+								</td>
+							</tr>
+							<tr>
+								<td style="border:thin groove" id="key3">
+									<b>Not applicable (STK does not check-out this feature upon startup)</b>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td id="desc"></td>
+				</tr>
+			</table>
+
+			<hr />
+
+			<table align="center" nowrap id="cTable">
+				<tr id="myControls">
+					<td nowrap >
+						<center>
+							<table cellspacing="10" style="font:12px">
+								<tr>
+									<td id="daemonSel" nowrap>
+										DAEMON Vendor:
+										<select name="daemons" size="1" onChange="get_selected_daemon()"></select>
+									</td>
+									<td>
+										<table>
+											<tr>
+												<td nowrap>
+													Server:<i>([port]@host)</i>:
+													<select name="hosts" onChange="hostchange()"></select>
+												</td>
+												<td id="hostcell">
+													<input type="text" name="host" size="20"/>
+												</td>
+											</tr>
+										</table>
+									</td>
+									<td>
+										<input type="SUBMIT" name="display" value="Submit" onClick="display_lmstat()"/>
+									</td>
+									<td id="versionSel" nowrap>
+										<nobr>STKv</nobr>
+										<select name="versions" size="1" onChange="get_selected_version()"></select>
+									</td>
+									<td>
+										<input type="button" name="StartSTK" value="StartSTK" onClick="runstk()"/>
+									</td>
+								</tr>
+							</table>
+						</center>
+					</td>
+				</tr>
+			</table>
+
+			<hr />
+
+				<center>
+				<input type="button" name="datetime" style="font:12px;background-color:transparent;border:0"/>
+
+				<table border="0">
+					<tr id="jens">
+						<td>
+							<input type="button" value="Select ALL"  onClick="selEACH()" />
+							<input type="button" value="Select NONE" onClick="selNONE()" />
+						</td>
+					</tr>
+				</table>
+
+				<table id="oTable"  border="0" cellpadding="5" cellspacing="1" style="font:12px;" onMouseDown="tableclick()" onMouseUp="myMouseUp()">
+					<tbody id="oBody"></tbody>
+				</table>
+			</center>
+		</body>
+</html>
