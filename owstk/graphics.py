@@ -1,7 +1,10 @@
+# enumerations of color profiles
 OneWeb = 0
 Telesat = 1
 
 def profile(n):
+    """Return the rgb color string associated with given profile."""
+
     if n == 0:
         color = '00FFFF'
     elif n == 1:
@@ -13,19 +16,12 @@ def profile(n):
     return color
 
 def colorProfile(profile):
-    if profile == 0:
-        color = '00FFFF'
-    elif profile == 1:
-        color = 'FF00FF'
-    elif profile == 2:
-        color = 'FFFF00'
-    else:
-        color = 'FFFFFF'
+    """Return the integer color code associated with given profile."""
 
-    return hexColorToInt(color)
-
+    return hexColorToInt(profile(color))
 
 def hexColorToInt(rgb):
+    """Convert rgb color string to STK integer color code."""
 
     r = int(rgb[0:2],16)
     g = int(rgb[2:4],16)
