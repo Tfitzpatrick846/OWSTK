@@ -8,7 +8,7 @@ import pkg_resources
 resource_package = __name__
 snpListFilename = pkg_resources.resource_filename(resource_package,'SNP sites v3.2.xlsx')
 
-def addSS1Constellation(sc, satIDs=[]):
+def addSS1Constellation(sc, satIDs=None):
     """ Build the OneWeb Service Stage 1 constellation with no spares
     sc: scenario
     satIDs: optional parameter to specify which satellites should be added
@@ -16,11 +16,9 @@ def addSS1Constellation(sc, satIDs=[]):
            for instance, 1208 is the 8th satellite in the 12th plane
     """
 
-    print('Creating OneWeb constellation')
-    
     return addConstellation(sc, 9, 32, satIDs)
 
-def addSS2Constellation(sc, satIDs=[]):
+def addSS2Constellation(sc, satIDs=None):
     """ Build the OneWeb Service Stage 2 constellation with no spares
     sc: scenario
     satIDs: optional parameter to specify which satellites should be added
@@ -28,11 +26,9 @@ def addSS2Constellation(sc, satIDs=[]):
            for instance, 1208 is the 8th satellite in the 12th plane
     """
 
-    print('Creating OneWeb constellation')
-    
     return addConstellation(sc, 18, 36, satIDs)
 
-def addSS3Constellation(sc, satIDs=[]):
+def addSS3Constellation(sc, satIDs=None):
     """ Build the OneWeb Service Stage 3 constellation with no spares
     sc: scenario
     satIDs: optional parameter to specify which satellites should be added
@@ -40,8 +36,6 @@ def addSS3Constellation(sc, satIDs=[]):
            for instance, 1208 is the 8th satellite in the 12th plane
     """
 
-    print('Creating OneWeb constellation')
-    
     return addConstellation(sc, 18, 49, satIDs)
 
 def addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
@@ -56,27 +50,14 @@ def addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
         stk_sat.graphics(satObj, graphics.OneWeb)
         return satObj
     
-    # if a single element is provided, make it a 1 element list
-    if type(satIDs) is not list:
-        satIDs = [satIDs]
-    
     alt = 1200
     inc = 87.9
 
-    satObjs = []
 
-    if satIDs:
+    if satIDs is None:
+        #add all satellites
 
-        for satID in satIDs:
-
-            plane = int(satID/100)
-            sat = satID % 100
-            raan = 0 + plane * 180 / numPlanes
-            satObj = createSatellite(sc, plane, sat, alt, inc, raan)
-            satObjs.append(satObj)
-            print('.',end='')
-
-    else:
+        satObjs = []
 
         for plane in range(numPlanes):
 
@@ -90,9 +71,38 @@ def addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
 
             print('\n')
 
-    return satObjs
+        return satObjs
 
-def addSNPs(sc, snpIDs=[]):
+    elif type(satIDs) is list:
+        # add the listed satellites
+
+        satObjs = []
+
+        for satID in satIDs:
+
+            plane = int(satID/100)
+            sat = satID % 100
+            raan = 0 + plane * 180 / numPlanes
+            satObj = createSatellite(sc, plane, sat, alt, inc, raan)
+            satObjs.append(satObj)
+            print('.',end='')
+
+        return satObjs
+
+    else:
+        # add the single satellite
+    
+        satID = satIDs
+
+        plane = int(satID/100)
+        sat = satID % 100
+        raan = 0 + plane * 180 / numPlanes
+        satObj = createSatellite(sc, plane, sat, alt, inc, raan)
+        print('.',end='')
+
+        return satObj
+
+def addSNPs(sc, snpIDs=None):
     """ Add the OneWeb SNP sites
     If IDs are provided, the numbering is the order of the rollout
     """
@@ -111,10 +121,32 @@ def addSNPs(sc, snpIDs=[]):
             lat.append(snpSheet.cell_value(rowx=k, colx=3))
             lon.append(snpSheet.cell_value(rowx=k, colx=4))
 
-    if type(snpIDs) is list:
+    if type(snpIDs) is int:
+        # add a single SNP
 
-        if not snpIDs:
-            snpIDs = list(range(len(label)))
+        snpID = snpIDs
+
+        for k in range(len(label)):
+
+            if k == snpID:
+
+                f = facility.add(sc, label[k], lat[k], lon[k])
+                print('.',end='')
+                return f
+
+    elif snpIDs == None:
+
+        facilities = []
+
+        for k in range(len(label)):
+
+            facilities.append(facility.add(sc, label[k], lat[k], lon[k]))
+            print('.',end='')
+        
+        return facilities
+
+    else:
+        # add list of SNPs
 
         facilities = []
 
@@ -122,18 +154,10 @@ def addSNPs(sc, snpIDs=[]):
 
             if k in snpIDs:
 
-                facilities.append(facility.add(sc, label[k], lat[k], lon[k]))
-                print('.',end='')
-    else:
-
-        for k in range(len(label)):
-
-            if k == snpIDs:
-
                 facilities = facility.add(sc, label[k], lat[k], lon[k])
                 print('.',end='')
 
-    return facilities
+        return facilities
 
 def attachUserAntennas(sat):
 
