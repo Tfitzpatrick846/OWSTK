@@ -111,10 +111,10 @@ def addSNPs(sc, snpIDs=[]):
             lat.append(snpSheet.cell_value(rowx=k, colx=3))
             lon.append(snpSheet.cell_value(rowx=k, colx=4))
 
-    if not snpIDs:
-        snpIDs = list(range(len(label)))
-
     if type(snpIDs) is list:
+
+        if not snpIDs:
+            snpIDs = list(range(len(label)))
 
         facilities = []
 

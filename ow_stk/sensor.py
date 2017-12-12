@@ -49,12 +49,18 @@ def addFixed(obj, name, shape, dim1, dim2, az = 0, el = 90):
 def addTargeted(obj, name, shape, dim1, dim2, targets):
 
     def add1Targeted(obj, name, shape, dim1, dim2, targets):
+
         sensor = obj.Children.New(STKObjects.eSensor, name)
         sensor2 = sensor.QueryInterface(STKObjects.IAgSensor)
 
         # set pointing
+        if type(targets) is not list:
+            targets = [targets]
+
         sensor2.SetPointingType(STKObjects.eSnPtTargeted)
-        sensor2.CommonTasks.SetPointingTargetedTracking(STKObjects.eTrackModeTranspond, STKObjects.eBoresightRotate, targets.Path)
+        pointing = sensor2.Pointing.QueryInterface(STKObjects.IAgSnPtTargeted)
+        for target in targets:
+            pointing.Targets.Add(target.Path)
 
         # set beam shape
         if shape.lower().strip() == 'elipse':
