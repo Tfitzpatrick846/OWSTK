@@ -9,38 +9,46 @@ resource_package = __name__
 snpListFilename = pkg_resources.resource_filename(resource_package,'SNP sites v3.2.xlsx')
 
 def addSS1Constellation(sc, satIDs=None):
-    """ Build the OneWeb Service Stage 1 constellation with no spares
-    sc: scenario
-    satIDs: optional parameter to specify which satellites should be added
-           list of 4 digit number or string thereof to identify plane and sat number
-           for instance, 1208 is the 8th satellite in the 12th plane
+    """Add OneWeb SS1 constellation to the scenario.
+
+    Keyword arguments:
+    sc -- scenario
+    satIDs -- Optional parameter to specify which satellites should be added.
+            A 4 digit number or string thereof, or list of those, to identify plane and
+            sat number. For instance, 1208 is the 8th satellite in the 12th plane
+            (default: all satellites)
     """
 
     return addConstellation(sc, 9, 32, satIDs)
 
 def addSS2Constellation(sc, satIDs=None):
-    """ Build the OneWeb Service Stage 2 constellation with no spares
-    sc: scenario
-    satIDs: optional parameter to specify which satellites should be added
-           list of 4 digit number or string thereof to identify plane and sat number
-           for instance, 1208 is the 8th satellite in the 12th plane
+    """Add OneWeb SS2 constellation to the scenario.
+
+    Keyword arguments:
+    sc -- scenario
+    satIDs -- Optional parameter to specify which satellites should be added.
+            A 4 digit number or string thereof, or list of those, to identify plane and
+            sat number. For instance, 1208 is the 8th satellite in the 12th plane
+            (default: all satellites)
     """
 
     return addConstellation(sc, 18, 36, satIDs)
 
 def addSS3Constellation(sc, satIDs=None):
-    """ Build the OneWeb Service Stage 3 constellation with no spares
-    sc: scenario
-    satIDs: optional parameter to specify which satellites should be added
-           list of 4 digit number or string thereof to identify plane and sat number
-           for instance, 1208 is the 8th satellite in the 12th plane
+    """Add OneWeb SS3 constellation to the scenario.
+
+    Keyword arguments:
+    sc -- scenario
+    satIDs -- Optional parameter to specify which satellites should be added.
+            A 4 digit number or string thereof, or list of those, to identify plane and
+            sat number. For instance, 1208 is the 8th satellite in the 12th plane
+            (default: all satellites)
     """
 
     return addConstellation(sc, 18, 49, satIDs)
 
 def addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
-    """Build a OneWeb constellation with a given number of planes and satellites
-    """
+    """Add OneWeb constellation to the scenario."""
 
     def createSatellite(sc, plane, sat, alt, inc, raan):
 
@@ -103,8 +111,10 @@ def addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
         return satObj
 
 def addSNPs(sc, snpIDs=None):
-    """ Add the OneWeb SNP sites
-    If IDs are provided, the numbering is the order of the rollout
+    """Add the OneWeb SNP sites to the scenario.
+
+    IDs are integers in the order of rollout.
+    If no IDs are provided, all are added.
     """
 
     snpBook = xlrd.open_workbook(snpListFilename)
@@ -160,6 +170,7 @@ def addSNPs(sc, snpIDs=None):
         return facilities
 
 def attachUserAntennas(sat):
+    """Attach Ku antennas to a satellite."""
 
     sensors = []
     dim1 = 23.7
@@ -180,5 +191,6 @@ def attachUserAntennas(sat):
     return sensors
 
 def attachGatewayAntennas(sat):
+    """Attach Ka antennas to a satellite."""
 
     pass

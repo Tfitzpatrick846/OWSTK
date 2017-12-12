@@ -2,6 +2,7 @@ from . import satellite as stk_sat
 from . import graphics
 
 def addConstellation(sc):
+    """Add Telesat constellation to the scenario."""
 
     print('Creating Telesat constellation')
     

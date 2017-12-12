@@ -3,6 +3,7 @@ import comtypes
 from comtypes.gen import STKUtil, STKObjects
 
 def addFixed(obj, name, shape, dim1, dim2, az = 0, el = 90):
+    """Add a fixed antenna to an object."""
 
     def add1Fixed(obj, name, shape, dim1, dim2, az, el):
         sensor = obj.Children.New(STKObjects.eSensor, name)
@@ -47,6 +48,7 @@ def addFixed(obj, name, shape, dim1, dim2, az = 0, el = 90):
     return sensors
 
 def addTargeted(obj, name, shape, dim1, dim2, targets):
+    """Add a targeted antenna to an object."""
 
     def add1Targeted(obj, name, shape, dim1, dim2, targets):
 
