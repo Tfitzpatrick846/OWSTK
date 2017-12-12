@@ -1,4 +1,3 @@
-from win32api import GetSystemMetrics
 import comtypes
 from comtypes.client import CreateObject, GetActiveObject
 from comtypes.gen import STKUtil, STKObjects
@@ -18,13 +17,6 @@ def quit(app):
     # app = app()
     app.quit()
     del app
-
-def maximize(app):
-    # width and height are wrong
-    app.Top = 0
-    app.Left = 0
-    app.Width = int(GetSystemMetrics(0)/2)
-    app.Height = int(GetSystemMetrics(1)-30)
 
 def root(app):
     r = app.Personality2
