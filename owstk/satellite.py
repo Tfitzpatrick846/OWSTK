@@ -46,6 +46,10 @@ def add(sc, name, apogee, perigee, inc, raan, trueAnomaly, argper=0):
     return sat
 
 def graphics(sat, profile):
+    """Set graphics of satellite to a profile.
+    
+    graphics = owstk.satellite.graphics(sat, owstk.graphics.OneWeb)
+    """
 
     # create the interface
     sat2 = sat.QueryInterface(STKObjects.IAgSatellite)
@@ -64,6 +68,7 @@ def graphics(sat, profile):
     return g
 
 def propagate(sats):
+    """Propagate satellite or list of satellites."""
 
     if type(sats) is not list:
         sats = [sats]

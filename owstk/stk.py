@@ -88,8 +88,6 @@ def setTimePeriod(sc, startTime, stopTime):
     setTImePeriod(sc, startTime, stopTime)
     """
 
-    # accepts datetime objects from datetime package
-
     def datetime2str(dt):
         day = '%02d' % dt.day
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
