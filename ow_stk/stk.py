@@ -4,6 +4,11 @@ from comtypes.gen import STKUtil, STKObjects
 import datetime
 
 def app():
+    """Create the STK Application object.
+
+    If STK is open, use that instance.  If not, open STK.
+    """
+
     try:
         a = GetActiveObject('STK11.Application')
     except OSError:
@@ -14,33 +19,54 @@ def app():
     return a
 
 def quit(app):
+    """Quit STK."""
+
     # app = app()
     app.quit()
     del app
 
 def root(app):
+    """Get the root of the app and initialize units."""
+
     r = app.Personality2
     r.UnitPreferences.Item('LatitudeUnit').SetCurrentUnit('deg')
     r.UnitPreferences.Item('LongitudeUnit').SetCurrentUnit('deg')
     return r
 
 def newScenario(root, name='Untitled'):
+    """Create a new scenario."""
+
     root.NewScenario(name)
     return root.CurrentScenario
 
 def new(name='Untitled'):
+    """Create set of objects for a new scenario.
+
+    Creates the application, root, and scenario objects.
+    """
+
     a = app()
     r = root(a)
     sc = newScenario(r, name)
     return sc, r, a
 
 def current():
+    """Create set of objects for the current scenario.
+
+    Creates the application, root, and scenario objects.
+    """
+
     a = app()
     r = root(a)
     sc = root.CurrentScenario
     return sc, r, a
 
 def clear(sc=None):
+    """Delete all objects from scenario.
+
+    If no scenario is provided, all objects in current scenario are deleted.
+    """
+
     if sc == None:
         a = app()
         r = root(a)
@@ -51,6 +77,17 @@ def clear(sc=None):
         allChildren.item(0).unload()
 
 def setTimePeriod(sc, startTime, stopTime):
+    """Set the simulation start and stop times
+
+    Start and stop times are specified as datetime objects from the datetime module.
+    
+    import datetime
+    startTime = datetime.datetime.(year, month, day, hour, minute, second, microsecond)
+    deltaTime = datetime.deltatime(days=365)
+    stopTime = startTime + deltaTime
+    setTImePeriod(sc, startTime, stopTime)
+    """
+
     # accepts datetime objects from datetime package
 
     def datetime2str(dt):
