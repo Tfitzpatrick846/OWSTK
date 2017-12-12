@@ -72,5 +72,3 @@ def setTimePeriod(sc, startTime, stopTime):
     stopTimeStr = datetime2str(stopTime)
     sc2.SetTimePeriod(startTimeStr, stopTimeStr)
 
-def objPath(obj):
-    pass
