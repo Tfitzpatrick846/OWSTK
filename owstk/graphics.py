@@ -15,10 +15,10 @@ def profile(n):
         color = 'FFFFFF'
     return color
 
-def colorProfile(profile):
+def colorProfile(n):
     """Return the integer color code associated with given profile."""
 
-    return hexColorToInt(profile(color))
+    return hexColorToInt(profile(n))
 
 def hexColorToInt(rgb):
     """Convert rgb color string to STK integer color code."""
