@@ -1,7 +1,7 @@
-from . import satellite as stk_sat
-from . import sensor as stk_sensor
-from . import graphics
-from . import facility
+from .. import satellite as stk_sat
+from .. import sensor as stk_sensor
+from .. import graphics
+from .. import facility
 import xlrd
 
 import pkg_resources
@@ -19,7 +19,7 @@ def addSS1Constellation(sc, satIDs=None):
             (default: all satellites)
     """
 
-    return addConstellation(sc, 9, 32, satIDs)
+    return _addConstellation(sc, 9, 32, satIDs)
 
 def addSS2Constellation(sc, satIDs=None):
     """Add OneWeb SS2 constellation to the scenario.
@@ -32,7 +32,7 @@ def addSS2Constellation(sc, satIDs=None):
             (default: all satellites)
     """
 
-    return addConstellation(sc, 18, 36, satIDs)
+    return _addConstellation(sc, 18, 36, satIDs)
 
 def addSS3Constellation(sc, satIDs=None):
     """Add OneWeb SS3 constellation to the scenario.
@@ -45,9 +45,9 @@ def addSS3Constellation(sc, satIDs=None):
             (default: all satellites)
     """
 
-    return addConstellation(sc, 18, 49, satIDs)
+    return _addConstellation(sc, 18, 49, satIDs)
 
-def addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
+def _addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
     """Add OneWeb constellation to the scenario."""
 
     def createSatellite(sc, plane, sat, alt, inc, raan):
