@@ -6,15 +6,13 @@ import datetime
 def app():
     """Create the STK Application object.
 
-    If STK is open, use that instance.  If not, open STK.
+    If STK is open, use that instance.  If not, open the license selector.
     """
 
     try:
         a = GetActiveObject('STK11.Application')
     except OSError:
-        a = CreateObject('STK11.Application')
-        a.Visible = True
-        a.UserControl = True
+        raise ProcessLookupError('STK is not running.  Open it using the STKLicenseUsage tool.')
 
     return a
 
