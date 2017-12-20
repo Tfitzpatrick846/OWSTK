@@ -184,7 +184,6 @@ def attachUserAntennas(sat):
         else:
             el = 90 - ((k-8) + 0.5) * 2 * dim2
             az = 180
-        print(str(k) + ' ' + str(el))
         sensor = stk_sensor.addFixed(sat,'Ku%02d' % k, 'rectangle', dim1, dim2, az, el)
         sensors.append(sensor)
 
