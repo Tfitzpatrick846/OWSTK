@@ -56,7 +56,7 @@ def current():
 
     a = app()
     r = root(a)
-    sc = root.CurrentScenario
+    sc = r.CurrentScenario
     return sc, r, a
 
 def clear(sc=None):
