@@ -1,3 +1,5 @@
+from .. import stk
+
 def timeVar(obj, dataPath, dataName, startTime, stopTime, dt=60):
 
     dataProvider = obj.DataProviders \

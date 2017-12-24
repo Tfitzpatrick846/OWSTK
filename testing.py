@@ -1,7 +1,13 @@
 import owstk
 
-#  sc, root, app = owstk.stk.new()
-sc, root, app = owstk.stk.current()
+if 'app' not in vars():
+    app = owstk.stk.app()
+
+if 'root' not in vars():
+    root = owstk.stk.root(app)
+
+if 'sc' not in vars():
+    sc = owstk.stk.newScenario(root)
 
 satellites = owstk.oneweb.gen1.addSS3Constellation(sc, [0, 1, 410])
 facilities = owstk.oneweb.gen1.addSNPs(sc, [4, 10])

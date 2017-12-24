@@ -33,3 +33,9 @@ For other Linux flavors, OS X and Windows, packages are available at
 def function():
     pass
 ```
+
+## Use
+
+### Closing
+
+STK must always be closed from Python using app.quit()
