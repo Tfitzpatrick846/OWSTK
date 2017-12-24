@@ -62,10 +62,12 @@ def setTimePeriod(sc, startTime, stopTime):
     sc2.SetTimePeriod(startTimeStr, stopTimeStr)
 
 def startTime(sc):
-    pass
+    t = sc.QueryInterface(STKObjects.IAgScenario).StartTime
+    return str2datetime(t)
 
 def stopTime(sc):
-    pass
+    t = sc.QueryInterface(STKObjects.IAgScenario).StopTime
+    return str2datetime(t)
 
 def datetime2str(datetime):
     day = '%02d' % datetime.day
@@ -91,3 +93,10 @@ def str2datetime(string):
     millisecond = int(float(string[21:24]))
 
     return datetime.datetime(year, month, day, hour, minute, second, 1000*millisecond)
+
+def parentScenario(obj):
+
+    while obj.ClassName != 'Scenario':
+        obj = obj.Parent
+
+    return obj
