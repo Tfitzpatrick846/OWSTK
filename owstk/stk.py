@@ -61,6 +61,12 @@ def setTimePeriod(sc, startTime, stopTime):
     stopTimeStr = datetime2str(stopTime)
     sc2.SetTimePeriod(startTimeStr, stopTimeStr)
 
+def startTime(sc):
+    pass
+
+def stopTime(sc):
+    pass
+
 def datetime2str(datetime):
     day = '%02d' % datetime.day
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -71,3 +77,17 @@ def datetime2str(datetime):
     second = '%02d' % datetime.second
     millisecond = '%03d' % (datetime.microsecond/1000)
     return day + ' ' + month + ' ' + year + ' ' + hour + ':' + minute + ':' + second + '.' + millisecond
+
+def str2datetime(string):
+
+    day = int(float(string[0:2]))
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    month_str = string[3:6]
+    month = months.index(month_str) + 1
+    year = int(float(string[7:11]))
+    hour = int(float(string[12:14]))
+    minute = int(float(string[15:17]))
+    second = int(float(string[18:20]))
+    millisecond = int(float(string[21:24]))
+
+    return datetime.datetime(year, month, day, hour, minute, second, 1000*millisecond)

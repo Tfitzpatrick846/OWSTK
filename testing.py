@@ -1,4 +1,6 @@
 import owstk
+import comtypes
+from comtypes.gen import STKUtil, STKObjects
 
 if 'app' not in vars():
     app = owstk.stk.app()
