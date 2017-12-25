@@ -164,7 +164,8 @@ def addSNPs(sc, snpIDs=None):
 
             if k in snpIDs:
 
-                facilities = facility.add(sc, label[k], lat[k], lon[k])
+                facility1 = facility.add(sc, label[k], lat[k], lon[k])
+                facilities.append(facility1)
                 print('.',end='')
 
         return facilities
