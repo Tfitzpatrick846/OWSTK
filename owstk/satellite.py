@@ -85,3 +85,24 @@ def propagate(sats):
 
         # propagate
         satProp.Propagate()
+
+def frozenEcc(sma, inc):
+    """Get the eccentricity for frozen orbit
+    
+    sma in km
+    inc in deg
+    """
+    
+    omega_f = np.pi/2 # argument of perigee
+    ecc = 7.459335 * np.sin(inc * np.pi/180) * np.sin(omega_f) / (sma)
+    return ecc
+
+def apogee(sma, ecc):
+    """Calculate the apogee from SMA and eccentricity"""
+
+    return sma * (1 + ecc)
+
+def perigee(sma, ecc):
+    """Calculate the perigee from SMA and eccentricity"""
+
+    return sma * (1 - ecc)
