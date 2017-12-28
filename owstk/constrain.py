@@ -14,10 +14,10 @@ def geoExclusion(obj, deg):
         sensor, attached to facility
     """
 
-    cstr = obj.AccessConstraints.AddConstraint(STKObjects.eCstrGeoExclusion)
-    cstr.Angle = deg;
+    cnstr = _getcnstr(obj, STKObjects.eCstrGeoExclusion)
+    cnstr.Angle = deg;
 
-    return cstr
+    return cnstr
 
 def elevation(obj, minimum=None, maximum=None):
     """Add the elevation constraint.
@@ -28,9 +28,9 @@ def elevation(obj, minimum=None, maximum=None):
         facility
     """
 
-    cstr = obj.AccessConstraints.AddConstraint(STKObjects.eCstrElevationAngle)
-    _minmaxcstr(cstr, minimum, maximum)
-    return cstr
+    cnstr = _getcnstr(obj, STKObjects.eCstrElevationAngle)
+    _minmaxcnstr(cnstr, minimum, maximum)
+    return cnstr
 
 def azimuth(obj, minimum=None, maximum=None):
     """Add the azimuth constraint.
@@ -41,9 +41,9 @@ def azimuth(obj, minimum=None, maximum=None):
         facility
     """
 
-    cstr = obj.AccessConstraints.AddConstraint(STKObjects.eCstrElevationAngle)
-    _minmaxcstr(cstr, minimum, maximum)
-    return cstr
+    cnstr = _getcnstr(obj, STKObjects.eCstrElevationAngle)
+    _minmaxcnstr(cnstr, minimum, maximum)
+    return cnstr
 
 def gndElevation(obj, minimum=None, maximum=None):
     """Add the ground elevation constraint.
@@ -53,24 +53,38 @@ def gndElevation(obj, minimum=None, maximum=None):
         satellite
     """
 
-    cstr = obj.AccessConstraints.AddConstraint(STKObjects.eCstrGroundElevAngle)
-    _minmaxcstr(cstr, minimum, maximum)
-    return cstr
+    cnstr = _getcnstr(obj, STKObjects.eCstrGroundElevAngle)
+    _minmaxcnstr(cnstr, minimum, maximum)
+    return cnstr
 
 
-def _minmaxcstr(cstr, minimum=None, maximum=None):
+def _minmaxcnstr(cnstr, minimum=None, maximum=None):
     """Set values of min/max constraint."""
+
+    cnstr2 = cnstr.QueryInterface(STKObjects.IAgAccessCnstrMinMax)
     
     if minimum is not None:
-        cstr.EnableMin = True
-        cstr.Min = minimum
+        cnstr2.EnableMin = True
+        cnstr2.Min = minimum
     else:
-        cstr.EnableMin = False
+        cnstr2.EnableMin = False
 
     if maximum is not None:
-        cstr.EnableMax = True
-        cstr.Max = maximum
+        cnstr2.EnableMax = True
+        cnstr2.Max = maximum
     else:
-        cstr.EnableMax = False
+        cnstr2.EnableMax = False
 
-    return cstr
+    return cnstr2
+
+def _getcnstr(obj, enum):
+    """Get the constraint object"""
+
+    ac = obj.AccessConstraints
+
+    if ac.IsConstraintActive(enum):
+        cnstr = ac.GetActiveConstraint(enum)
+    else:
+        cnstr = ac.AddConstraint(enum)
+
+    return cnstr
