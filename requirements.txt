@@ -4,3 +4,4 @@ comtypes
 xlrd
 xlwt
 datetime
+scipy
