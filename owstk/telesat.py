@@ -4,9 +4,10 @@ from . import graphics
 def addConstellation(sc):
     """Add Telesat constellation to the scenario."""
 
-    print('Creating Telesat constellation')
-    
+    Re = 6371 # earth radius in km
+
     alt_pol = 1000
+    sma_pol = alt_pol + Re
     inc_pol = 99.5
     numPlanes_pol = 3
     numSatsPerPlane_pol = 12
@@ -22,7 +23,7 @@ def addConstellation(sc):
 
             trueAnomaly = trueAnomalyOffset + sat * 360 / numSatsPerPlane_pol
             satName = 'Telesat_pol%02d%02d' % (plane, sat)
-            satObj = stk_sat.add(sc, satName, alt_pol, alt_pol, inc_pol, raan, trueAnomaly)
+            satObj = stk_sat.add(sc, satName, sma_pol, 0, inc_pol, raan, trueAnomaly)
             stk_sat.graphics(satObj, graphics.Telesat)
             satObjs.append(satObj)
             print('.',end='')
@@ -38,7 +39,7 @@ def addConstellation(sc):
 
             trueAnomaly = trueAnomalyOffset + sat * 360 / numSatsPerPlane_pol
             satName = 'Telesat_pol%02d%02d' % (numPlanes_pol + plane, sat)
-            satObj = stk_sat.add(sc, satName, alt_pol, alt_pol, inc_pol, raan, trueAnomaly)
+            satObj = stk_sat.add(sc, satName, sma_pol, 0, inc_pol, raan, trueAnomaly)
             stk_sat.graphics(satObj, graphics.Telesat)
             satObjs.append(satObj)
             print('.',end='')
@@ -52,12 +53,13 @@ def addConstellation(sc):
 
             trueAnomaly = sat * 360 / numSatsPerPlane_pol
             satName = 'Telesat_pol%02d%02d' % (numPlanes_pol + 5, sat)
-            satObj = stk_sat.add(sc, satName, alt_pol, alt_pol, inc_pol, raan, trueAnomaly)
+            satObj = stk_sat.add(sc, satName, sma_pol, 0, inc_pol, raan, trueAnomaly)
             stk_sat.graphics(satObj, graphics.Telesat)
             satObjs.append(satObj)
             print('.',end='')
 
     alt_inc = 1248
+    sma_inc = alt_inc + Re
     inc_inc = 37.4
     numPlanes_inc = 5
     numSatsPerPlane_inc = 9
@@ -71,7 +73,7 @@ def addConstellation(sc):
 
             trueAnomaly = trueAnomalyOffset + sat * 360 / numSatsPerPlane_inc
             satName = 'Telesat_inc%02d%02d' % (plane, sat)
-            satObj = stk_sat.add(sc, satName, alt_inc, alt_inc, inc_inc, raan, trueAnomaly)
+            satObj = stk_sat.add(sc, satName, sma_inc, 0, inc_inc, raan, trueAnomaly)
             stk_sat.graphics(satObj, graphics.Telesat)
             satObjs.append(satObj)
             print('.',end='')
