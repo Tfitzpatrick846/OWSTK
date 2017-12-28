@@ -50,15 +50,33 @@ def addSS3Constellation(sc, satIDs=None):
 def _addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
     """Add OneWeb constellation to the scenario."""
 
-    def createSatellite(sc, plane, sat, alt, inc, raan):
+    def createSatellite(sc, plane, sat, sma, ecc, inc, raan):
 
         trueAnomaly = sat * 360 / numSatsPerPlane
         satName = 'OneWeb%02d%02d' % (plane, sat)
-        satObj = stk_sat.add(sc, satName, alt, alt, inc, raan, trueAnomaly)
+        satObj = stk_sat.add(sc, satName, sma, ecc, inc, raan, trueAnomaly)
         stk_sat.graphics(satObj, graphics.OneWeb)
         return satObj
-    
-    alt = 1200
+
+    sma = [
+        7621,
+        7581,
+        7617,
+        7577,
+        7613,
+        7573,
+        7609,
+        7569,
+        7605,
+        7565,
+        7601,
+        7562,
+        7597,
+        7557,
+        7593,
+        7553,
+        7589,
+        7585]
     inc = 87.9
 
 
@@ -70,10 +88,12 @@ def _addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
         for plane in range(numPlanes):
 
             raan = 0 + plane * 180 / numPlanes
+            sma1 = sma[plane]
 
             for sat in range(numSatsPerPlane):
 
-                satObj = createSatellite(sc, plane, sat, alt, inc, raan)
+                ecc = stk_sat.frozenEcc(sma1, inc)
+                satObj = createSatellite(sc, plane, sat, sma1, ecc, inc, raan)
                 satObjs.append(satObj)
                 print('.',end='')
 
@@ -89,9 +109,11 @@ def _addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
         for satID in satIDs:
 
             plane = int(satID/100)
+            sma1 = sma[plane]
+            ecc = stk_sat.frozenEcc(sma1, inc)
             sat = satID % 100
             raan = 0 + plane * 180 / numPlanes
-            satObj = createSatellite(sc, plane, sat, alt, inc, raan)
+            satObj = createSatellite(sc, plane, sat, sma1, ecc, inc, raan)
             satObjs.append(satObj)
             print('.',end='')
 
@@ -99,13 +121,15 @@ def _addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
 
     else:
         # add the single satellite
-    
+
         satID = satIDs
 
         plane = int(satID/100)
+        sma1 = sma[plane]
+        ecc = stk_sat.frozenEcc(sma1, inc)
         sat = satID % 100
         raan = 0 + plane * 180 / numPlanes
-        satObj = createSatellite(sc, plane, sat, alt, inc, raan)
+        satObj = createSatellite(sc, plane, sat, sma1, ecc, inc, raan)
         print('.',end='')
 
         return satObj
@@ -152,7 +176,7 @@ def addSNPs(sc, snpIDs=None):
 
             facilities.append(facility.add(sc, label[k], lat[k], lon[k]))
             print('.',end='')
-        
+
         return facilities
 
     else:

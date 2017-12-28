@@ -1,9 +1,9 @@
 from . import graphics as gfx
 import comtypes
 from comtypes.gen import STKUtil, STKObjects
+import numpy as np
 
-
-def add(sc, name, apogee, perigee, inc, raan, trueAnomaly, argper=0):
+def add(sc, name, sma, ecc, inc, raan, trueAnomaly, argper=0):
     """Add a satellite."""
 
     # create the satellite object
@@ -21,11 +21,11 @@ def add(sc, name, apogee, perigee, inc, raan, trueAnomaly, argper=0):
     keplerian = satProp.InitialState.Representation.ConvertTo(STKUtil.eOrbitStateClassical)
     keplerian2 = keplerian.QueryInterface(STKObjects.IAgOrbitStateClassical)
 
-    # apogee and perigee
-    keplerian2.SizeShapeType = STKObjects.eSizeShapeAltitude
-    sizeShape = keplerian2.SizeShape.QueryInterface(STKObjects.IAgClassicalSizeShapeAltitude)
-    sizeShape.PerigeeAltitude = perigee
-    sizeShape.ApogeeAltitude = apogee
+    # semimajor axis and eccentricity
+    keplerian2.SizeShapeType = STKObjects.eSizeShapeSemimajorAxis
+    sizeShape = keplerian2.SizeShape.QueryInterface(STKObjects.IAgClassicalSizeShapeSemimajorAxis)
+    sizeShape.SemiMajorAxis = sma
+    sizeShape.Eccentricity = ecc
 
     # inclination and argument of perigee
     keplerian2.Orientation.Inclination = inc
