@@ -57,6 +57,14 @@ def gndElevation(obj, minimum=None, maximum=None):
     _minmaxcnstr(cnstr, minimum, maximum)
     return cnstr
 
+def remove(obj, cnstr):
+    """Remove constraint."""
+    
+    ct = cnstr.ConstraintType
+    ac = obj.AccessConstraints
+    if ac.IsConstraintActive(ct):
+        ac.RemoveConstraint(cnstr.ConstraintType)
+
 
 def _minmaxcnstr(cnstr, minimum=None, maximum=None):
     """Set values of min/max constraint."""
