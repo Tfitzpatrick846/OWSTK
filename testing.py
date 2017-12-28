@@ -21,6 +21,5 @@ fac = facilities[0]
 
 fixedSensors = owstk.oneweb.gen1.attachUserAntennas(satellites[0])
 fixedSensor = fixedSensors[0]
-fixedSensors.append(owstk.oneweb.gen1.attachUserAntennas(satellites[1]))
 
-targettedSensor = owstk.oneweb.gen1.attachGatewayAntenna(sat, fac)
+targetedSensor = owstk.oneweb.gen1.attachGatewayAntenna(sat, fac)

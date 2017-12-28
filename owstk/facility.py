@@ -20,4 +20,3 @@ def graphics(facility, profile):
     g = facility.Graphics
     g.Color = gfx.colorProfile(profile)
     g.LabelVisible = False
-
