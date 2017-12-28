@@ -2,3 +2,5 @@ numpy
 matplotlib
 comtypes
 xlrd
+xlwt
+datetime

@@ -6,6 +6,7 @@ import comtypes
 from comtypes.gen import STKUtil, STKObjects
 from matplotlib import pyplot as plt
 import numpy as np
+import datetime
 
 print('First, open STK using the STKLicenseUsage.hta')
 print('You will need STK Pro and STK Integration')
@@ -19,9 +20,17 @@ root = owstk.stk.root(app)
 print('Open a new, untitled scenario')
 sc = owstk.stk.newScenario(root)
 
+print('Set the time period from 2019 through 2021')
+startTime = datetime.datetime(2019,1,1)
+stopTime = startTime + datetime.timedelta(3*365)
+owstk.stk.setTimePeriod(sc, startTime, stopTime)
+
 print('Create a few satellites from the SS3 constellation')
 satellites = owstk.oneweb.gen1.addSS3Constellation(sc, [0, 1, 410])
 sat = satellites[0]
+
+print('Plot some orbital parameters')
+# ADD STUFF HERE
 
 print('Create a few of the SNPs')
 facilities = owstk.oneweb.gen1.addSNPs(sc, [4, 10])
@@ -33,6 +42,9 @@ fixedSensor = fixedSensors[0]
 
 print('Add the Ka antennas to that same satellite')
 targetedSensor = owstk.oneweb.gen1.attachGatewayAntenna(sat, fac)
+
+print('Compute access parameters')
+# ADD STUFF HERE
 
 
 print('\nTo exit, take the following steps:')
