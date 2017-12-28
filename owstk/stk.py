@@ -1,3 +1,5 @@
+"""STK program and scenario interaction"""
+
 import comtypes
 from comtypes.client import  GetActiveObject
 from comtypes.gen import STKUtil, STKObjects

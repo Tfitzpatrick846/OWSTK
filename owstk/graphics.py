@@ -1,3 +1,5 @@
+"""Graphics"""
+
 # enumerations of color profiles
 OneWeb = 0
 Telesat = 1

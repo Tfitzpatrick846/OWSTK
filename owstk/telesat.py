@@ -1,3 +1,5 @@
+"""Telesat constellation"""
+
 from . import satellite as stk_sat
 from . import graphics
 

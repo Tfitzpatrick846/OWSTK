@@ -1,3 +1,5 @@
+"""OneWeb's Gen-1 system"""
+
 from .. import satellite as stk_sat
 from .. import sensor as stk_sensor
 from .. import graphics

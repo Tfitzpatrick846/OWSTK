@@ -1,3 +1,5 @@
+"""Orbital dynamics computations"""
+
 from . import dataProvider as dp
 
 def ecc(sat, startTime=None, stopTime=None, dt=60):

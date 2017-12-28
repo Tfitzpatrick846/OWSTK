@@ -1,3 +1,5 @@
+"""Access computations"""
+
 import comtypes
 from comtypes.gen import STKUtil, STKObjects
 

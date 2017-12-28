@@ -1,3 +1,5 @@
+"""Satellites"""
+
 from . import graphics as gfx
 import comtypes
 from comtypes.gen import STKUtil, STKObjects

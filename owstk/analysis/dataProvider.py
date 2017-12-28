@@ -1,3 +1,7 @@
+"""Data providers for analysis tools
+
+Not meant for direct access by users"""
+
 from .. import stk
 
 def timeVar(obj, dataPath, dataName, startTime=None, stopTime=None, dt=60):
