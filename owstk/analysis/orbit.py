@@ -47,6 +47,15 @@ def sma(sat, startTime=None, stopTime=None, dt=60):
     t = dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt)
     return (s, t)
 
+def inc(sat, startTime=None, stopTime=None, dt=60):
+    """Get inclination array from satellite over given time"""
+
+    dataPath = 'Parameter Set: Orbit/Orbit'
+    dataName = 'Classical.Inclination'
+    s = dp.timeVar(sat, dataPath, dataName, startTime, stopTime, dt)
+    t = dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt)
+    return (s, t)
+
 def raan(sat, startTime=None, stopTime=None, dt=60):
     """Get RAAN array from satellite over given time"""
 
