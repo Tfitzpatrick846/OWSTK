@@ -27,7 +27,7 @@ owstk.stk.setTimePeriod(sc, startTime, stopTime)
 root.Rewind()
 
 print('Create a few satellites from the SS3 constellation')
-satellites = owstk.oneweb.gen1.addSS3Constellation(sc, [0, 1, 410])
+satellites = owstk.oneweb.gen1.addSS3Constellation(sc, [318, 1, 410])
 sat = satellites[0]
 
 print('Plot some orbital parameters')
