@@ -99,6 +99,8 @@ def _addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
 
             print('\n')
 
+        print('\n', end='')
+
         return satObjs
 
     elif type(satIDs) is list:
@@ -117,6 +119,8 @@ def _addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
             satObjs.append(satObj)
             print('.',end='')
 
+        print('\n', end='')
+
         return satObjs
 
     else:
@@ -131,6 +135,8 @@ def _addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
         raan = 0 + plane * 180 / numPlanes
         satObj = createSatellite(sc, plane, sat, sma1, ecc, inc, raan)
         print('.',end='')
+
+        print('\n', end='')
 
         return satObj
 
@@ -166,6 +172,7 @@ def addSNPs(sc, snpIDs=None):
 
                 f = facility.add(sc, label[k], lat[k], lon[k])
                 print('.',end='')
+                print('\n', end='')
                 return f
 
     elif snpIDs == None:
@@ -176,6 +183,8 @@ def addSNPs(sc, snpIDs=None):
 
             facilities.append(facility.add(sc, label[k], lat[k], lon[k]))
             print('.',end='')
+
+        print('\n', end='')
 
         return facilities
 
@@ -191,6 +200,8 @@ def addSNPs(sc, snpIDs=None):
                 facility1 = facility.add(sc, label[k], lat[k], lon[k])
                 facilities.append(facility1)
                 print('.',end='')
+
+        print('\n', end='')
 
         return facilities
 
@@ -211,6 +222,9 @@ def attachUserAntennas(sat):
             az = 180
         sensor = stk_sensor.addFixed(sat,'Ku%02d' % k, 'rectangle', dim1, dim2, az, el)
         sensors.append(sensor)
+        print('.',end='')
+
+    print('\n', end='')
 
     return sensors
 

@@ -78,6 +78,8 @@ def addConstellation(sc):
             satObjs.append(satObj)
             print('.',end='')
 
+    print('\n', end='')
+
     return satObjs
 
 def attachUserAntennas(sat):
