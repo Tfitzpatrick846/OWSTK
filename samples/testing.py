@@ -17,6 +17,7 @@ if 'sc' not in vars():
 startTime = datetime.datetime(2019,1,1)
 stopTime = startTime + datetime.timedelta(3*365)
 owstk.stk.setTimePeriod(sc, startTime, stopTime)
+root.Rewind()
 
 satellites = owstk.oneweb.gen1.addSS3Constellation(sc, [0, 1, 410])
 sat = satellites[0]

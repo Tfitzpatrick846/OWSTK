@@ -1,6 +1,7 @@
 """Orbital dynamics computations"""
 
 from . import dataProvider as dp
+from ..stk import str2datetime
 
 def ecc(sat, startTime=None, stopTime=None, dt=60):
     """Get eccentricity array from satellite over given time"""
@@ -8,7 +9,7 @@ def ecc(sat, startTime=None, stopTime=None, dt=60):
     dataPath = 'Parameter Set: Orbit/Orbit'
     dataName = 'Classical.Eccentricity'
     e = dp.timeVar(sat, dataPath, dataName, startTime, stopTime, dt)
-    t = dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt)
+    t = str2datetime(dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt))
     return (t, e)
 
 def x(sat, startTime=None, stopTime=None, dt=60):
@@ -17,7 +18,7 @@ def x(sat, startTime=None, stopTime=None, dt=60):
     dataPath = 'Parameter Set: Orbit/Orbit'
     dataName = 'Cartesian.X'
     x1 = dp.timeVar(sat, dataPath, dataName, startTime, stopTime, dt)
-    t = dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt)
+    t = str2datetime(dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt))
     return (x1, t)
 
 def y(sat, startTime=None, stopTime=None, dt=60):
@@ -26,7 +27,7 @@ def y(sat, startTime=None, stopTime=None, dt=60):
     dataPath = 'Parameter Set: Orbit/Orbit'
     dataName = 'Cartesian.Y'
     y1 = dp.timeVar(sat, dataPath, dataName, startTime, stopTime, dt)
-    t = dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt)
+    t = str2datetime(dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt))
     return (y1, t)
 
 def z(sat, startTime=None, stopTime=None, dt=60):
@@ -35,7 +36,7 @@ def z(sat, startTime=None, stopTime=None, dt=60):
     dataPath = 'Parameter Set: Orbit/Orbit'
     dataName = 'Cartesian.Z'
     z1 = dp.timeVar(sat, dataPath, dataName, startTime, stopTime, dt)
-    t = dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt)
+    t = str2datetime(dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt))
     return (z1, t)
 
 def sma(sat, startTime=None, stopTime=None, dt=60):
@@ -44,7 +45,7 @@ def sma(sat, startTime=None, stopTime=None, dt=60):
     dataPath = 'Parameter Set: Orbit/Orbit'
     dataName = 'Classical.SemimajorAxis'
     s = dp.timeVar(sat, dataPath, dataName, startTime, stopTime, dt)
-    t = dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt)
+    t = str2datetime(dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt))
     return (s, t)
 
 def inc(sat, startTime=None, stopTime=None, dt=60):
@@ -53,7 +54,7 @@ def inc(sat, startTime=None, stopTime=None, dt=60):
     dataPath = 'Parameter Set: Orbit/Orbit'
     dataName = 'Classical.Inclination'
     s = dp.timeVar(sat, dataPath, dataName, startTime, stopTime, dt)
-    t = dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt)
+    t = str2datetime(dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt))
     return (s, t)
 
 def raan(sat, startTime=None, stopTime=None, dt=60):
@@ -62,7 +63,7 @@ def raan(sat, startTime=None, stopTime=None, dt=60):
     dataPath = 'Parameter Set: Orbit/Orbit'
     dataName = 'Classical.RAAN'
     r = dp.timeVar(sat, dataPath, dataName, startTime, stopTime, dt)
-    t = dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt)
+    t = str2datetime(dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt))
     return (r, t)
 
 def perigee(sat, startTime=None, stopTime=None, dt=60):
@@ -71,7 +72,7 @@ def perigee(sat, startTime=None, stopTime=None, dt=60):
     dataPath = 'Parameter Set: Orbit/Orbit'
     dataName = 'Classical.RadiusOfPeriapsis'
     r = dp.timeVar(sat, dataPath, dataName, startTime, stopTime, dt)
-    t = dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt)
+    t = str2datetime(dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt))
     return (r, t)
 
 def apogee(sat, startTime=None, stopTime=None, dt=60):
@@ -80,7 +81,7 @@ def apogee(sat, startTime=None, stopTime=None, dt=60):
     dataPath = 'Parameter Set: Orbit/Orbit'
     dataName = 'Classical.RadiusOfApoapsis'
     r = dp.timeVar(sat, dataPath, dataName, startTime, stopTime, dt)
-    t = dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt)
+    t = str2datetime(dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt))
     return (r, t)
 
 def longitudeOfPerigee(sat, startTime=None, stopTime=None, dt=60):
@@ -89,6 +90,6 @@ def longitudeOfPerigee(sat, startTime=None, stopTime=None, dt=60):
     dataPath = 'Parameter Set: Orbit/Orbit'
     dataName = 'Classical.LongitudeOfPeriapsis'
     l = dp.timeVar(sat, dataPath, dataName, startTime, stopTime, dt)
-    t = dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt)
+    t = str2datetime(dp.timeVar(sat, dataPath, 'Time', startTime, stopTime, dt))
     return (l, t)
 

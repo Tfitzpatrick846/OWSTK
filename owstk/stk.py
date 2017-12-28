@@ -72,30 +72,80 @@ def stopTime(sc):
     return str2datetime(t)
 
 def datetime2str(time):
-    day = '%d' % time.day
-    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    month = months[time.month - 1]
-    year = '%04d' % time.year
-    hour = '%02d' % time.hour
-    minute = '%02d' % time.minute
-    second = '%02d' % time.second
-    millisecond = '%03d' % (time.microsecond/1000)
-    return day + ' ' + month + ' ' + year + ' ' + hour + ':' + minute + ':' + second + '.' + millisecond
+    """Convert datetime object to STK style time stamp."""
+
+    def datetime2str1(time):
+        """Only accepts datetime objects"""
+
+        day = '%d' % time.day
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        month = months[time.month - 1]
+        year = '%04d' % time.year
+        hour = '%02d' % time.hour
+        minute = '%02d' % time.minute
+        second = '%02d' % time.second
+        millisecond = '%03d' % (time.microsecond/1000)
+        return day + ' ' + month + ' ' + year + ' ' + hour + ':' + minute + ':' + second + '.' + millisecond
+
+    if type(time) is list:
+
+        strings=[]
+        for k in range(len(time)):
+            strings.append(datetime2str1(time[k]))
+
+        return strings
+
+    elif type(time) is tuple:
+
+        strings=[]
+        for k in range(len(time)):
+            strings.append(datetime2str1(time[k]))
+
+        return tuple(strings)
+
+    else:
+
+        return datetime2str1(time)
 
 def str2datetime(string):
+    """Convert STK style time stamp to datetime object."""
 
-    parts = string.split(' ')
-    day = int(float(parts[0]))
-    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    month = months.index(parts[1]) + 1
-    year = int(float(parts[2]))
-    time = parts[3]
-    hour = int(float(time[0:2]))
-    minute = int(float(time[3:5]))
-    second = int(float(time[6:8]))
-    millisecond = int(float(time[9:12]))
+    def str2datetime1(string):
+        """Only accepts strings"""
 
-    return datetime.datetime(year, month, day, hour, minute, second, 1000*millisecond)
+        parts = string.split(' ')
+        day = int(float(parts[0]))
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        month = months.index(parts[1]) + 1
+        year = int(float(parts[2]))
+        time = parts[3]
+        hour = int(float(time[0:2]))
+        minute = int(float(time[3:5]))
+        second = int(float(time[6:8]))
+        millisecond = int(float(time[9:12]))
+
+        return datetime.datetime(year, month, day, hour, minute, second, 1000*millisecond)
+
+    if type(string) is list:
+
+        times=[]
+        for k in range(len(string)):
+            times.append(str2datetime1(string[k]))
+
+        return times
+
+    elif type(string) is tuple:
+
+        times=[]
+        for k in range(len(string)):
+            times.append(str2datetime1(string[k]))
+
+        return tuple(times)
+
+    else:
+
+        return str2datetime1(string)
+
 
 def parentScenario(obj):
 
