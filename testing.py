@@ -15,8 +15,12 @@ if 'sc' not in vars():
 
 satellites = owstk.oneweb.gen1.addSS3Constellation(sc, [0, 1, 410])
 sat = satellites[0]
+
 facilities = owstk.oneweb.gen1.addSNPs(sc, [4, 10])
 fac = facilities[0] 
-sensors = owstk.oneweb.gen1.attachUserAntennas(satellites[0])
-sensor = sensors[0]
-sensors.append(owstk.oneweb.gen1.attachUserAntennas(satellites[1]))
+
+fixedSensors = owstk.oneweb.gen1.attachUserAntennas(satellites[0])
+fixedSensor = fixedSensors[0]
+fixedSensors.append(owstk.oneweb.gen1.attachUserAntennas(satellites[1]))
+
+targettedSensor = owstk.oneweb.gen1.attachGatewayAntenna(sat, fac)

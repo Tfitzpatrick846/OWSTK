@@ -228,7 +228,10 @@ def attachUserAntennas(sat):
 
     return sensors
 
-def attachGatewayAntennas(sat):
+def attachGatewayAntenna(sat, snps):
     """Attach Ka antennas to a satellite."""
 
-    pass
+    ang = 1
+    sensor = stk_sensor.addTargeted(sat, 'GW', 'elipse', ang, ang, snps)
+    return sensor
+
