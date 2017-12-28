@@ -2,7 +2,11 @@ import comtypes
 from comtypes.gen import STKUtil, STKObjects
 
 def geoExclusion(obj, deg):
-    """Add the GEO arc exclusion constraint."""
+    """Add the GEO arc exclusion constraint.
+    
+    Useable for the following objects:
+        sensor, attached to facility
+    """
 
     cstr = obj.AccessConstraints.AddConstraint(STKObjects.eCstrGeoExclusion)
     cstr.Angle = deg;
@@ -10,7 +14,13 @@ def geoExclusion(obj, deg):
     return cstr
 
 def elevation(obj, minimum=None, maximum=None):
-    """Add the elevation constraint."""
+    """Add the elevation constraint.
+    
+    Useable for the following objects:
+        sensor
+        satellite
+        facility
+    """
 
     cstr = obj.AccessConstraints.AddConstraint(STKObjects.eCstrElevationAngle)
     
