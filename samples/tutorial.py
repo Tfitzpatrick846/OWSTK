@@ -20,17 +20,21 @@ root = owstk.stk.root(app)
 print('Open a new, untitled scenario')
 sc = owstk.stk.newScenario(root)
 
-print('Set the time period from 2019 through 2021')
-startTime = datetime.datetime(2019,1,1)
-stopTime = startTime + datetime.timedelta(3*365)
+print('Set the time period from 2018 through 2021')
+startTime = datetime.datetime(2018,1,1)
+stopTime = startTime + datetime.timedelta(days=3*365)
 owstk.stk.setTimePeriod(sc, startTime, stopTime)
+root.Rewind()
 
 print('Create a few satellites from the SS3 constellation')
 satellites = owstk.oneweb.gen1.addSS3Constellation(sc, [0, 1, 410])
 sat = satellites[0]
 
 print('Plot some orbital parameters')
-# ADD STUFF HERE
+raan, t = owstk.analysis.orbit.raan(sat, dt=60*60*24)
+plt.plot_date(t,raan)
+print('Close the graph to continue.')
+plt.show()
 
 print('Create a few of the SNPs')
 facilities = owstk.oneweb.gen1.addSNPs(sc, [4, 10])
