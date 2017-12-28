@@ -14,12 +14,10 @@ def addFixed(obj, name, shape, dim1, dim2, az = 0, el = 90):
         sensor2.CommonTasks.SetPointingFixedAzEl(az, el, STKObjects.eBoresightHold)
 
         # set beam shape
-        if shape.lower().strip() == 'elipse':
+        if shape.lower().strip() == 'conic':
 
-            sensor2.SetPatternType(STKObjects.eSnComplexConic)
-            minAngle = 0
-            maxAngle = 360
-            sensor2.CommonTasks.SetPatternComplexConic(dim1, dim2, minAngle, maxAngle)
+            sensor2.SetPatternType(STKObjects.eSnSimpleConic)
+            sensor2.CommonTasks.SetPatternSimpleConic(dim1, 0.1)
 
         elif shape.lower().strip() == 'rectangle':
 
@@ -65,12 +63,10 @@ def addTargeted(obj, name, shape, dim1, dim2, targets):
             pointing.Targets.Add(target.Path)
 
         # set beam shape
-        if shape.lower().strip() == 'elipse':
+        if shape.lower().strip() == 'conic':
 
-            sensor2.SetPatternType(STKObjects.eSnComplexConic)
-            minAngle = 0
-            maxAngle = 360
-            sensor2.CommonTasks.SetPatternComplexConic(dim1, dim2, minAngle, maxAngle)
+            sensor2.SetPatternType(STKObjects.eSnSimpleConic)
+            sensor2.CommonTasks.SetPatternSimpleConic(dim1, 0.1)
 
         elif shape.lower().strip() == 'rectangle':
 
