@@ -3,6 +3,7 @@ import comtypes
 from comtypes.gen import STKUtil, STKObjects
 from matplotlib import pyplot as plt
 import numpy as np
+import datetime
 
 if 'app' not in vars():
     app = owstk.stk.app()
@@ -12,6 +13,10 @@ if 'root' not in vars():
 
 if 'sc' not in vars():
     sc = owstk.stk.newScenario(root)
+
+startTime = datetime.datetime(2019,1,1)
+stopTime = startTime + datetime.timedelta(3*365)
+owstk.stk.setTimePeriod(sc, startTime, stopTime)
 
 satellites = owstk.oneweb.gen1.addSS3Constellation(sc, [0, 1, 410])
 sat = satellites[0]
