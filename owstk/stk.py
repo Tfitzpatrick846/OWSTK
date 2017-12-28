@@ -62,6 +62,8 @@ def setTimePeriod(sc, startTime, stopTime):
     startTimeStr = datetime2str(startTime)
     stopTimeStr = datetime2str(stopTime)
     sc2.SetTimePeriod(startTimeStr, stopTimeStr)
+    r = root(sc)
+    r.Rewind()
 
 def startTime(sc):
     t = sc.QueryInterface(STKObjects.IAgScenario).StartTime
@@ -71,28 +73,29 @@ def stopTime(sc):
     t = sc.QueryInterface(STKObjects.IAgScenario).StopTime
     return str2datetime(t)
 
-def datetime2str(datetime):
-    day = '%02d' % datetime.day
+def datetime2str(time):
+    day = '%d' % time.day
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    month = months[datetime.month - 1]
-    year = '%04d' % datetime.year
-    hour = '%02d' % datetime.hour
-    minute = '%02d' % datetime.minute
-    second = '%02d' % datetime.second
-    millisecond = '%03d' % (datetime.microsecond/1000)
+    month = months[time.month - 1]
+    year = '%04d' % time.year
+    hour = '%02d' % time.hour
+    minute = '%02d' % time.minute
+    second = '%02d' % time.second
+    millisecond = '%03d' % (time.microsecond/1000)
     return day + ' ' + month + ' ' + year + ' ' + hour + ':' + minute + ':' + second + '.' + millisecond
 
 def str2datetime(string):
 
-    day = int(float(string[0:2]))
+    parts = string.split(' ')
+    day = int(float(parts[0]))
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    month_str = string[3:6]
-    month = months.index(month_str) + 1
-    year = int(float(string[7:11]))
-    hour = int(float(string[12:14]))
-    minute = int(float(string[15:17]))
-    second = int(float(string[18:20]))
-    millisecond = int(float(string[21:24]))
+    month = months.index(parts[1]) + 1
+    year = int(float(parts[2]))
+    time = parts[3]
+    hour = int(float(time[0:2]))
+    minute = int(float(time[3:5]))
+    second = int(float(time[6:8]))
+    millisecond = int(float(time[9:12]))
 
     return datetime.datetime(year, month, day, hour, minute, second, 1000*millisecond)
 
