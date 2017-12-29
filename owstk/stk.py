@@ -4,6 +4,7 @@ import comtypes
 from comtypes.client import  GetActiveObject
 from comtypes.gen import STKUtil, STKObjects
 import datetime
+import psutil
 
 def app():
     """Create the STK Application object.
@@ -22,7 +23,11 @@ def quit(app):
     """Quit STK."""
 
     app.quit()
-    del app
+
+    # kill the open process to disconnect from license server
+    for p in psutil.process_iter(attrs=['name']):
+        if p.info['name'] == 'AgUiApplication.exe':
+            p.kill()
 
 def root(app):
     """Get the root of the app and initialize units."""

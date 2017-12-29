@@ -59,7 +59,4 @@ intervals = owstk.analysis.access.intervals(access)
 print('Close the graph to continue.')
 owstk.analysis.plot.intervals(intervals[0:20])
 
-print('\nTo exit, take the following steps:')
-print('\t1) Delete all variables except for app')
-print('\t2) Run app.quit()')
-print('\t3) Close Python')
+print('\nTo quit STK, use the command owstk.stk.quit(app)')

@@ -49,4 +49,4 @@ Check out the `tutorial.py` script for example uses.
 Closing
 '''''''
 
-STK must always be closed from Python using app.quit().
+STK must always be closed from Python using owstk.stk.quit(app)
