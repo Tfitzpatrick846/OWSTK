@@ -9,6 +9,28 @@ def timePlot(time, values):
     plt.plot_date(pyplotdate, values)
     plt.show()
 
+def intervals(intrvls):
+
+    times = []
+    val = []
+    for intrvl in intrvls:
+
+        times.append(intrvl[0])
+        val.append(0)
+
+        times.append(intrvl[0])
+        val.append(1)
+
+        times.append(intrvl[1])
+        val.append(1)
+    
+        times.append(intrvl[1])
+        val.append(0)
+    
+    pyplotdate = _datetime2pyplotdate(times)
+    plt.plot_date(pyplotdate, val, '-')
+    plt.show()
+
 def _datetime2pyplotdate(time):
     """Convert datetime value to something useable by pyplot.plot_date"""
 
