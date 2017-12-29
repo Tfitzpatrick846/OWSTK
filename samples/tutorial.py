@@ -9,7 +9,7 @@ import numpy as np
 import datetime
 
 print('First, open STK using the STKLicenseUsage.hta')
-print('You will need STK Pro and STK Integration')
+print('You will need STK Pro and STK Integration\n')
 
 print('Establish a connection to the open application')
 app = owstk.stk.app()
@@ -32,9 +32,8 @@ sat = satellites[0]
 
 print('Plot some orbital parameters')
 raan, t = owstk.analysis.orbit.raan(sat, dt=60*60*24)
-plt.plot_date(t,raan)
 print('Close the graph to continue.')
-plt.show()
+owstk.analysis.plot.timePlot(t, raan)
 
 print('Create a few of the SNPs')
 facilities = owstk.oneweb.gen1.addSNPs(sc, [4, 10])
@@ -47,9 +46,11 @@ fixedSensor = fixedSensors[0]
 print('Add the Ka antennas to that same satellite')
 targetedSensor = owstk.oneweb.gen1.attachGatewayAntenna(sat, fac)
 
-print('Compute access parameters')
-# ADD STUFF HERE
-
+print('Compute access from gateway antenna to an SNP')
+access = owstk.analysis.access.compute(targetedSensor, fac)
+intervals = owstk.analysis.access.intervals(access)
+print('Close the graph to continue.')
+owstk.analysis.plot.intervals(intervals[0:20])
 
 print('\nTo exit, take the following steps:')
 print('\t1) Delete all variables except for app')
