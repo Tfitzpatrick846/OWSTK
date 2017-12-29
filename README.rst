@@ -41,12 +41,27 @@ Install the prerequisite packages with the command
 
     $ pip install -r requirements.txt
 
+Generate the comtypes used in STK by running
+
+.. code-block::
+
+    $ python genstkcomtypes.py
+
 Use
 ---
+
+Always open STK using the `STKLicenseUsage.hta` tool.  Select the
+licenses that you need.  The following licenses are used in owstk:
+
+- STK Professional Edition
+- STK Integration
+- Analysis Workbench
 
 Check out the `tutorial.py` script for example uses.
 
 Closing
 '''''''
 
-STK must always be closed from Python using owstk.stk.quit(app)
+STK must always be closed from Python using owstk.stk.quit(app).
+Not doing so risks creating a hanging license checkout that
+requires a restart to the license server to clear.
