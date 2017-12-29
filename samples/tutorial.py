@@ -9,7 +9,7 @@ import numpy as np
 import datetime
 
 print('First, open STK using the STKLicenseUsage.hta')
-print('You will need STK Pro and STK Integration\n')
+print('You will need STK Pro, Analysis Workbench, and STK Integration\n')
 
 print('Establish a connection to the open application')
 app = owstk.stk.app()
@@ -38,6 +38,13 @@ owstk.analysis.plot.timePlot(t, raan)
 print('Create a few of the SNPs')
 facilities = owstk.oneweb.gen1.addSNPs(sc, [4, 10])
 fac = facilities[0] 
+
+print('Compute angle formed by three objects')
+angle, time = owstk.analysis.workbench.angleBetween(fac,
+    satellites[0], satellites[1], owstk.stk.startTime(sc),
+    owstk.stk.stopTime(sc), dt=60*60*24)
+print('Close the graph to continue.')
+owstk.analysis.plot.timePlot(time, angle)
 
 print('Add the Ku antennas to one of the satellites')
 fixedSensors = owstk.oneweb.gen1.attachUserAntennas(sat)
