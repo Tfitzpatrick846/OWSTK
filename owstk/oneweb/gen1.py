@@ -116,7 +116,7 @@ def _addConstellation(sc, numPlanes, numSatsPerPlane, satIDs):
             sma1 = sma[plane]
             ecc = stk_sat.frozenEcc(sma1, inc)
             sat = satID % 100
-            raan = 0 + plane * 180 / numPlanes
+            raan = 0 + plane / numPlanes * 18 * 10.15
             satObj = createSatellite(sc, plane, sat, sma1, ecc, inc, raan)
             satObjs.append(satObj)
             print('.',end='')
